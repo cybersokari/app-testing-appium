@@ -135,3 +135,6 @@ reports
 .env.ios
 .env.android
 chromedriver-mobile
+
+# Jetbrain
+.idea
