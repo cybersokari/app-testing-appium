@@ -1,0 +1,42 @@
+services:
+  appium:
+    image: appium/appium:latest
+    container_name: appium-android
+    ports:
+      - "4723:4723"
+    environment:
+      REMOTE_ADB: true
+      ANDROID_DEVICES: $ANDROID_DEVICES
+      REMOTE_ADB_POLLING_SEC: 10
+      APPIUM_ADDITIONAL_PARAMS: --relaxed-security --allow-insecure chromedriver_autodownload --allow-insecure adb_shell
+    volumes:
+      - $APK_PATH:/$APK_PATH
+      # ADB context from host
+      - ~/.android:/root/.android
+    privileged: true
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    cpus: 1
+    mem_limit: 2048m
+  allure-android:
+    image: frankescobar/allure-docker-service
+    container_name: allure-android
+    ports:
+      - "5050:5050"
+    volumes:
+      - ${PWD}/reports/android/allure-results:/app/allure-results
+      - ${PWD}/reports/android/allure-report:/app/default-reports
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 3
+      KEEP_HISTORY: 25
+  allure-ios:
+    image: frankescobar/allure-docker-service
+    container_name: allure-ios
+    ports:
+      - "5050:5050"
+    volumes:
+      - ${PWD}/reports/ios/allure-results:/app/allure-results
+      - ${PWD}/reports/ios/allure-report:/app/default-reports
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 3
+      KEEP_HISTORY: 25

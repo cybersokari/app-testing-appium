@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": ".",
+    "site": "ios-test-report",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
