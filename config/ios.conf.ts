@@ -13,8 +13,8 @@ export const config: WebdriverIO.Config = {
 
   port: 4723,
 
-  specs: ['../specs/**/*.feature'],
-  // specs: ['../specs/send-crypto.feature'],
+  // specs: ['../specs/**/*.feature'],
+  specs: ['../specs/deposit.feature'],
   // Patterns to exclude.
   // exclude: ['../specs/util/**', '../specs/pages/**'],
   maxInstances: 1,

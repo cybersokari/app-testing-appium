@@ -1,5 +1,6 @@
 Feature: Transaction Pin Management
 
+  @allure.label.id:TPIN-1
   Scenario Outline: Attempt to change transaction pin with same pin
     Given I am logged into the application
     When I navigate to security settings

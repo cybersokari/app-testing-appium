@@ -1,5 +1,6 @@
 Feature: Send Cryptocurrency
 
+  @allure.label.id:SC-1
   Scenario Outline: Send USDT to a wallet address
     Given I am logged into the application
     When I navigate to the wallet section

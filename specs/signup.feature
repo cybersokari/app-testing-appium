@@ -1,5 +1,6 @@
 Feature: Create new user
 
+  @allure.label.id:SIGN-1
   Scenario Outline: Signup with valid credentials
     Given I am on the signup screen
     When  I enter a new email and <valid password> and click continue

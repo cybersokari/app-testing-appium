@@ -1,18 +1,14 @@
-import {Given, Then, When, BeforeAll} from '@wdio/cucumber-framework'
+import {Given, Then, When} from '@wdio/cucumber-framework'
 import {WelcomePage} from '../pages/walkthrough.ts'
 import {LoginPage} from '../pages/auth/login.ts'
-import {HomePage} from '../pages/home/home.ts'
 import {DepositCryptoPage} from '../pages/wallet/crypto/deposit-crypto.ts'
 import {$, driver, expect} from '@wdio/globals'
 import {WalletHomePage} from "../pages/wallet/home.ts";
 import {Navigation} from "../pages/navigation.ts";
 import {TopUpPage} from "../pages/wallet/fiat/top-up.ts";
 import {TopUpAccountPage} from "../pages/wallet/fiat/topup-account.ts";
+import { homePage } from './hooks.ts'
 
-let homePage: HomePage
-BeforeAll(() => {
-  homePage = new HomePage()
-})
 
 Given(/^I am logged into the application$/, async function () {
   await new WelcomePage().loginBtn.click()
@@ -90,9 +86,6 @@ When(/^I enter a deposit amount of (\d+)$/, async function (amount : number) {
   }
   await topUpPage.fiatContinueBtn.waitForEnabled()
   await topUpPage.fiatContinueBtn.click()
-
-
-
 });
 When(/^I confirm the deposit details$/, async function () {
 

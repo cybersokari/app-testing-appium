@@ -18,6 +18,7 @@
     "@wdio/local-runner": "^9.4.1",
     "@wdio/spec-reporter": "^9.2.14",
     "allure-commandline": "^2.32.0",
+    "allure-cucumberjs": "^3.0.6",
     "appium": "^2.12.1",
     "appium-uiautomator2-driver": "^3.8.0",
     "appium-xcuitest-driver": "^7.28.3",
