@@ -27,7 +27,7 @@ services:
       - ${PWD}/reports/android/allure-results:/app/allure-results
       - ${PWD}/reports/android/allure-report:/app/default-reports
     environment:
-      CHECK_RESULTS_EVERY_SECONDS: 3
+      CHECK_RESULTS_EVERY_SECONDS: 10
       KEEP_HISTORY: 25
   allure-ios:
     image: frankescobar/allure-docker-service
@@ -38,5 +38,5 @@ services:
       - ${PWD}/reports/ios/allure-results:/app/allure-results
       - ${PWD}/reports/ios/allure-report:/app/default-reports
     environment:
-      CHECK_RESULTS_EVERY_SECONDS: 3
+      CHECK_RESULTS_EVERY_SECONDS: 10
       KEEP_HISTORY: 25

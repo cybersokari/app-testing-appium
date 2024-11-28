@@ -48,14 +48,14 @@ async function getBuildVersion(platform: PLATFORM): Promise<string> {
       const adb = await ADB.createADB()
       const info = await adb.getPackageInfo(process.env.PACKAGE_NAME)
       version = info.versionName ?? ''
-      console.log(`Android build info ${info.versionName}`)
+      console.log(`Android build version ${info.versionName}`)
     } else if (platform === PLATFORM.IOS && process.env.APP_PATH) {
       const {stdout} = await exec(
         `/usr/libexec/PlistBuddy -c print ${escapeSpacesInPath(process.env.APP_PATH)}/Info.plist | grep CFBundleShortVersionString`,
       )
       const array = stdout.toString().split(' ')
       version = array[array.length -1]
-      console.log(`iOS build info ${version}`)
+      console.log(`iOS build version ${version}`)
     }
   } catch (e) {
     console.log(`Error getting build info ${e}`)

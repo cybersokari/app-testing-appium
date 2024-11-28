@@ -74,7 +74,7 @@ When(/^verify my account with a valid OTP sent to my email$/, async function () 
     const verifyPage = new VerifyPage()
     await verifyPage.verifyBtn.waitForDisplayed()
     const mailosaur = new MailosaurClient(process.env.MAILOSAUR_KEY!)
-    const message = await mailosaur.messages.get( process.env.MAILOSAUR_ID!, {sentTo: this.newEmail}, {timeout: 10000})
+    const message = await mailosaur.messages.get( process.env.MAILOSAUR_ID!, {sentTo: this.newEmail}, {timeout: 20000})
     const otp = message.html!.codes![0].value!
     await verifyPage.getFirstInputFieldFromPage().setValue(otp)
     await verifyPage.verifyBtn.click()
