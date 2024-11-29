@@ -23,7 +23,8 @@ export class LoginPage extends Page {
     } else {
       await new NotificationPermissionPage().dismissRequest()
     }
-    await new Navigation().homeBtn.waitForDisplayed({timeout: 20000})
+    await new Navigation().homeBtn.waitForDisplayed()
+    await this.waitForLoading()
   }
 
   public async loginWithDefaultUser() {
