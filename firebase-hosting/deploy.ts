@@ -8,7 +8,7 @@ const exec = promisify(require('child_process').exec)
 env({path: ['.env.ios', '.env.android']})
 
 async function main() {
-    const arg = process.argv[3].toLowerCase()
+    const arg = process.argv[2].toLowerCase()
     console.log(`Deploying ${arg} report to Firebase Hosting`)
     const platform : PLATFORM = arg === 'ios' ? PLATFORM.IOS : PLATFORM.ANDROID
     // Create new ./allure-results/history directory for report regeneration

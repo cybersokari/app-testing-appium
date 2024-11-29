@@ -6,7 +6,6 @@
     "appium-adb": "^12.7.0",
     "dotenv": "^16.4.5",
     "firebase-tools": "^13.27.0",
-    "plist": "^3.1.0",
     "webdriverio": "^9.2.8"
   },
   "devDependencies": {
@@ -29,6 +28,7 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
+    "wdio-docker-service": "^3.2.1",
     "wdio-wait-for": "^3.0.11"
   },
   "scripts": {
@@ -36,7 +36,7 @@
     "ios": "wdio run config/ios.conf.ts",
     "android-report": "npx allure open reports/android/allure-report",
     "ios-report": "npx allure open reports/ios/allure-report",
-    "deploy-android": "ts-node firebase-hosting/deploy.ts -- android",
-    "deploy-ios": "ts-node firebase-hosting/deploy.ts -- ios"
+    "deploy-android": "ts-node firebase-hosting/deploy.ts android",
+    "deploy-ios": "ts-node firebase-hosting/deploy.ts ios"
   }
 }
