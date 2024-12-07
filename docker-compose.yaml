@@ -10,7 +10,7 @@ services:
       REMOTE_ADB_POLLING_SEC: 10
       APPIUM_ADDITIONAL_PARAMS: --relaxed-security --allow-insecure chromedriver_autodownload --allow-insecure adb_shell
     volumes:
-      - $APK_PATH:/$APK_PATH
+      - ${PWD}/build:/${PWD}/build
       # ADB context from host
       - ~/.android:/root/.android
     privileged: true
@@ -18,25 +18,16 @@ services:
       - /dev/bus/usb:/dev/bus/usb
     cpus: 1
     mem_limit: 2048m
-  allure-android:
-    image: frankescobar/allure-docker-service
-    container_name: allure-android
-    ports:
-      - "5050:5050"
-    volumes:
-      - ${PWD}/reports/android/allure-results:/app/allure-results
-      - ${PWD}/reports/android/allure-report:/app/default-reports
+  allure:
+    image: sokari/allure-docker-deploy
+    container_name: deploy-service
     environment:
-      CHECK_RESULTS_EVERY_SECONDS: 10
-      KEEP_HISTORY: 25
-  allure-ios:
-    image: frankescobar/allure-docker-service
-    container_name: allure-ios
-    ports:
-      - "5050:5050"
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-key.json
+      - STORAGE_BUCKET=gatedaccessdev.appspot.com
+      - WEBSITE_ID=example-site
+      - WEBSITE_EXPIRES=1h
+      - KEEP_RETRIES=false
+      - KEEP_HISTORY=true
     volumes:
-      - ${PWD}/reports/ios/allure-results:/app/allure-results
-      - ${PWD}/reports/ios/allure-report:/app/default-reports
-    environment:
-      CHECK_RESULTS_EVERY_SECONDS: 10
-      KEEP_HISTORY: 25
+      - ${PWD}/reports/android/allure-results:/allure-results
+      - ${PWD}/service-account-sokari.json:/credentials/gcp-key.json

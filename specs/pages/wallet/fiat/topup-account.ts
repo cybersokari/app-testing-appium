@@ -1,10 +1,11 @@
 import {Page} from '../../page.ts'
 
-export class TopUpAccountPage extends Page {
-  public madePaymentBtn = this.$('fiat-made-payment-btn')
-  public cancelPaymentBtn = this.$('fiat-cancel-payment-btn')
-  public fiatNubanCpyBtn = this.$('fiat-nuban-copy-btn')
-  public doneBtn = this.$('fiat-done-btn')
-  public viewDetailsBtn = this.$('fiat-view-details-btn')
-  public dismissPushRequestBtn = this.$('dismiss-push-btn')
+class TopUpAccountPage extends Page {
+  get madePaymentBtn() { return this.$('fiat-made-payment-btn') }
+  get cancelPaymentBtn() { return this.$('fiat-cancel-payment-btn') }
+  get fiatNubanCpyBtn() { return this.$('fiat-nuban-copy-btn') }
+  get doneBtn() { return this.$('fiat-done-btn') }
+  get viewDetailsBtn() { return this.$('fiat-view-details-btn') }
+  get dismissPushRequestBtn() { return this.$('dismiss-push-btn') }
 }
+export default new TopUpAccountPage()

@@ -14,7 +14,7 @@ export const config: WebdriverIO.Config = {
   port: 4723,
 
   specs: ['../specs/**/*.feature'],
-  // specs: ['../specs/swap.feature'],
+  // specs: ['../specs/deposit.feature'],
   // Patterns to exclude.
   // exclude: ['../specs/util/**', '../specs/pages/**'],
   maxInstances: 1,
@@ -88,22 +88,22 @@ export const config: WebdriverIO.Config = {
   // see also: https://webdriver.io/docs/dot-reporter
   reporters: [
     'spec',
-    // [
-    //   'video',
-    //   {
-    //     saveAllVideos: false, // If true, also saves videos for successful test cases
-    //     videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
-    //     outputDir: `${IOS_REPORTS_DIR}/videos`,
-    //     videoRenderTimeout: 15000, // Seconds
-    //     onlyRecordLastFailure: true,
-    //   },
-    // ],
+    [
+      'video',
+      {
+        saveAllVideos: false, // If true, also saves videos for successful test cases
+        videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+        outputDir: `${IOS_REPORTS_DIR}/videos`,
+        videoRenderTimeout: 15000, // Seconds
+        onlyRecordLastFailure: true,
+      },
+    ],
     [
       'allure',
       {
         outputDir: `${IOS_REPORTS_DIR}/allure-results`,
         disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: false,
+        disableWebdriverScreenshotsReporting: true,
         useCucumberStepReporter: true,
         reportedEnvironmentVars: {
           os_platform: 'iOS',
@@ -156,11 +156,11 @@ export const config: WebdriverIO.Config = {
     _context: Object,
   ) => {
     if (result.error) {
-      await driver.takeScreenshot()
+      // await driver.takeScreenshot()
     }
   },
   onComplete: async () => {
-    return generateAllureReports(IOS_REPORTS_DIR)
+    // return generateAllureReports(IOS_REPORTS_DIR)
   },
   onPrepare: async () => {
     process.env.buildversion = await getBuildVersion(PLATFORM.IOS)

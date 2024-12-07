@@ -1,9 +1,9 @@
 import {Given, Then, When} from "@wdio/cucumber-framework";
-import {WelcomePage} from "../pages/walkthrough.ts";
+import WelcomePage from "../pages/walkthrough.ts";
 import {LoginPage} from "../pages/auth/login.ts";
 import {Navigation} from "../pages/navigation.ts";
 import {NotificationPermissionPage} from "../pages/notification-permission.ts";
-import {ProfilePage} from "../pages/profile.ts";
+import ProfilePage from "../pages/profile.ts";
 import {SignupPage} from "../pages/auth/signup.ts";
 import {$, driver} from "@wdio/globals";
 import {VerifyPage} from "../pages/auth/verify.ts";
@@ -12,7 +12,7 @@ import {BiometricsPage} from "../pages/auth/biometrics.ts";
 import { mailosaur } from "./hooks.ts";
 
 Given(/^I am on the login page$/, async function () {
-    await new WelcomePage().loginBtn.click()
+    await WelcomePage.loginBtn.click()
     await new LoginPage().emailInput.waitForDisplayed()
 });
 When(/^I enter (.*) as email and (.*) as password and clicks login button$/, async function (email: string, password: string) {
@@ -36,19 +36,18 @@ Then(/^I should see the home screen$/, async function () {
 });
 When(/^I navigate to the profile screen$/, async function () {
     await new Navigation().profileBtn.click()
-    await new ProfilePage().profileMenuBtn.waitForDisplayed()
+    await ProfilePage.profileMenuBtn.waitForDisplayed()
 });
 When(/^clicks on logout button$/, async function () {
-    const profilePage = new ProfilePage()
-    await profilePage.scrollDown()
-    await profilePage.logoutBtn.click()
+    await ProfilePage.scrollDown()
+    await ProfilePage.logoutBtn.click()
 });
 Then(/^I can see the login page$/, async function () {
     await new LoginPage().emailInput.waitForDisplayed()
 });
 Given(/^I am on the signup screen$/, async function () {
-    await new WelcomePage().getStartedBtn.waitForDisplayed()
-    await new WelcomePage().getStartedBtn.click()
+    await WelcomePage.getStartedBtn.waitForDisplayed()
+    await WelcomePage.getStartedBtn.click()
 });
 When(/^I enter a new email and (.*) and click continue$/, async function (validPassword: string) {
     const signupPage = new SignupPage()

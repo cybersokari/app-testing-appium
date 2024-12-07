@@ -1,117 +1,106 @@
 import {Given, Then, When} from '@wdio/cucumber-framework'
-import {WelcomePage} from '../pages/walkthrough.ts'
+import WelcomePage from '../pages/walkthrough.ts'
 import {LoginPage} from '../pages/auth/login.ts'
-import {DepositCryptoPage} from '../pages/wallet/crypto/deposit-crypto.ts'
+import DepositCryptoPage from '../pages/wallet/crypto/deposit-crypto.ts'
 import {$, driver, expect} from '@wdio/globals'
-import {WalletHomePage} from "../pages/wallet/home.ts";
+import WalletHomePage from "../pages/wallet/home.ts";
 import {Navigation} from "../pages/navigation.ts";
-import {TopUpPage} from "../pages/wallet/fiat/top-up.ts";
-import {TopUpAccountPage} from "../pages/wallet/fiat/topup-account.ts";
-import { homePage } from './hooks.ts'
+import TopUpPage from "../pages/wallet/fiat/top-up.ts";
+import TopUpAccountPage from "../pages/wallet/fiat/topup-account.ts";
+import HomePage from "../pages/home/home.ts";
+import {page} from "./hooks.ts";
 
 
 Given(/^I am logged into the application$/, async function () {
-  await new WelcomePage().loginBtn.click()
+  await WelcomePage.loginBtn.click()
   await new LoginPage().loginWithDefaultUser()
 })
-When(/^user navigate to deposit screen$/, async function () {
-  await homePage.waitForLoading()
-  await homePage.depositBtn.click()
-  const assetBtn = homePage.usdCBtn
-  await assetBtn.waitForDisplayed()
-  await homePage.usdCBtn.click()
-  await homePage.waitForLoading(15000)
+When(/^I am on the deposit screen$/, async function () {
+  await HomePage.depositBtn.click()
+  await HomePage.usdCBtn.waitForDisplayed()
 })
-When(/^select prefer network$/, async function () {
-  const cryptoPage = new DepositCryptoPage()
-  const cryptoSelect = cryptoPage.networkSelectBtn
-  await cryptoSelect.waitForDisplayed()
-  await cryptoSelect.click()
-})
-When(/^clicks on copy address button$/, async function () {
-  const cryptoPage = new DepositCryptoPage()
+When(/^when I try to deposit (.*)$/, async function (token: string) {
+  switch (token){
+    case 'USDC':
+      await HomePage.usdCBtn.click()
+          break
+    default : await HomePage.usdTBtn.click()
+  }
+  await HomePage.waitForLoading(15000)
+  await DepositCryptoPage.networkSelectBtn.waitForDisplayed()
+  await DepositCryptoPage.networkSelectBtn.click()
   const networkBtn = async () => {
-    const ntwk = cryptoPage.networkTRXBtn
+    const ntwk = DepositCryptoPage.networkTRXBtn
     if (await ntwk.isExisting()) {
       return ntwk
     }
-    return cryptoPage.networkBSCBtn
+    return DepositCryptoPage.networkBSCBtn
   }
   await (await networkBtn()).click()
-  await cryptoPage.waitForLoading()
-  await cryptoPage.addressCopyBtn.click()
+})
+When(/^I can copy the wallet address to device clipboard$/, async function () {
+  await DepositCryptoPage.waitForLoading()
+  await DepositCryptoPage.addressCopyBtn.click()
   // dismiss push notification permission nudge request
-  if(await cryptoPage.dismissPushRequestBtn.isDisplayed()){
+  if(await DepositCryptoPage.dismissPushRequestBtn.isDisplayed()){
     // dismiss push notification permission nudge request
-    await cryptoPage.dismissPushRequestBtn.click()
+    await DepositCryptoPage.dismissPushRequestBtn.click()
   }
-})
-When(/^clicks on share button$/, async function () {
-  const cryptoPage = new DepositCryptoPage()
-  await cryptoPage.scrollDown()
-  const cryptoShare = cryptoPage.addressShareBtn
-  await cryptoShare.click()
-})
-Then(/^the wallet address should be copied to device clipboard$/, async function () {
   const ff = await driver.getClipboard('plaintext')
   expect(ff.length).toBeGreaterThan(1)
 })
-Then(/^the share modal should be visible$/, async function () {
+When(/^share the wallet address as text$/, async function () {
+  await DepositCryptoPage.scrollDown()
+  await DepositCryptoPage.addressShareBtn.click()
+  // Confirm native share modal visible
   if (driver.isIOS) {
-    await $('~UICloseButtonBackground').click()
+    const iOSShareModal = $('~UICloseButtonBackground')
+    await expect(iOSShareModal).toBeExisting()
+    await iOSShareModal.click()
+  } else {
+    await expect(page.$('android:id/content')).toBeDisplayed()
   }
-  //TODO: SHARE MODAL ANDORID
 })
+
 When(/^I initiate a Naira deposit$/, async function () {
-
-  const walletHome = new WalletHomePage()
-  await walletHome.waitForLoading(15000)
+  await WalletHomePage.waitForLoading(15000)
   await new Navigation().openWalletTab()
-  await walletHome.receiveBtn.click()
-
-  await walletHome.ngnAssetModalBtn.waitForDisplayed()
-  await walletHome.ngnAssetModalBtn.click()
-
-
-
+  await WalletHomePage.receiveBtn.click()
+  await WalletHomePage.ngnAssetModalBtn.waitForDisplayed()
+  await WalletHomePage.ngnAssetModalBtn.click()
 });
 When(/^I enter a deposit amount of (\d+)$/, async function (amount : number) {
-
-  const topUpPage = new TopUpPage()
-  const amountInput = topUpPage.fiatInput
-  await amountInput.waitForDisplayed()
-  await amountInput.setValue(amount)
+  await TopUpPage.fiatInput.waitForDisplayed()
+  await TopUpPage.fiatInput.setValue(amount)
   if (driver.isIOS) {
-    await topUpPage.closeIOSKeyboard()
+    await TopUpPage.closeIOSKeyboard()
   }
-  await topUpPage.fiatContinueBtn.waitForEnabled()
-  await topUpPage.fiatContinueBtn.click()
+  await TopUpPage.fiatContinueBtn.waitForEnabled()
+  await TopUpPage.fiatContinueBtn.click()
 });
 When(/^I confirm the deposit details$/, async function () {
 
-  const topUpPage = new TopUpPage()
-  await topUpPage.fiatConfirmBtn.waitForDisplayed()
-  await topUpPage.fiatConfirmBtn.click()
-  await topUpPage.waitForLoading()
+  await TopUpPage.fiatConfirmBtn.waitForDisplayed()
+  await TopUpPage.fiatConfirmBtn.click()
+  await TopUpPage.waitForLoading()
 
 });
 When(/^I copy the NUBAN account number$/, async function () {
-  const topAccountPage = new TopUpAccountPage()
-  await topAccountPage.fiatNubanCpyBtn.click()
+  await TopUpAccountPage.fiatNubanCpyBtn.click()
 
-  if(await topAccountPage.dismissPushRequestBtn.isDisplayed()){
+  if(await TopUpAccountPage.dismissPushRequestBtn.isDisplayed()){
     // dismiss push notification permission nudge request
-    await topAccountPage.dismissPushRequestBtn.click()
+    await TopUpAccountPage.dismissPushRequestBtn.click()
   }
-  await topAccountPage.scrollDown()
-  await topAccountPage.madePaymentBtn.click()
-  await topAccountPage.waitForLoading()
+  await TopUpAccountPage.scrollDown()
+  await TopUpAccountPage.madePaymentBtn.waitForDisplayed()
+  await TopUpAccountPage.madePaymentBtn.doubleClick()
+  await TopUpAccountPage.waitForLoading()
 
-  const doneBtn = topAccountPage.doneBtn
-  await doneBtn.waitForDisplayed()
-  await doneBtn.click()
+  await TopUpAccountPage.doneBtn.waitForDisplayed()
+  await TopUpAccountPage.doneBtn.click()
 });
 Then(/^the copied account number should be available on device clipboard$/, async function () {
-  const accountNumber = await driver.getClipboard()
-  expect(accountNumber.length).toBeGreaterThan(0)
+  const accountNumber = await driver.getClipboard('plaintext')
+  await expect(accountNumber.length).toBeGreaterThan(0)
 });

@@ -1,10 +1,11 @@
 import {Page} from '../../page.ts'
 
-export class DepositCryptoPage extends Page {
-  public addressCopyBtn = this.$('deposit-crypto-address-copy-btn')
-  public addressShareBtn = this.$('deposit-crypto-address-share-btn')
-  public networkSelectBtn = this.$('deposit-crypto-network-select')
-  public networkTRXBtn = this.$('deposit-crypto-network-TRX')
-  public networkBSCBtn = this.$('deposit-crypto-network-BSC')
-  public dismissPushRequestBtn = this.$('dismiss-push-btn')
+class DepositCryptoPage extends Page {
+  get addressCopyBtn() { return this.$('deposit-crypto-address-copy-btn') }
+  get addressShareBtn() { return this.$('deposit-crypto-address-share-btn') }
+  get networkSelectBtn() { return this.$('deposit-crypto-network-select') }
+  get networkTRXBtn() { return this.$('deposit-crypto-network-TRX') }
+  get networkBSCBtn() { return this.$('deposit-crypto-network-BSC') }
+  get dismissPushRequestBtn() { return this.$('dismiss-push-btn') }
 }
+export default new DepositCryptoPage()

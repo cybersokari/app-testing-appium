@@ -1,7 +1,7 @@
 import {PLATFORM} from '../specs/util/util.ts'
-import ADB from 'appium-adb'
 const allure = require('allure-commandline')
 import util = require('node:util')
+import AdbHelper from "../specs/util/adb-helper.ts";
 
 const exec = util.promisify(require('child_process').exec)
 
@@ -45,8 +45,7 @@ async function getBuildVersion(platform: PLATFORM): Promise<string> {
   let version = ''
   try {
     if (platform === PLATFORM.ANDROID && process.env.PACKAGE_NAME) {
-      const adb = await ADB.createADB()
-      const info = await adb.getPackageInfo(process.env.PACKAGE_NAME)
+      const info = await AdbHelper.adb.getPackageInfo(process.env.PACKAGE_NAME)
       version = info.versionName ?? ''
       console.log(`Android build version ${info.versionName}`)
     } else if (platform === PLATFORM.IOS && process.env.APP_PATH) {
@@ -65,8 +64,7 @@ async function getBuildVersion(platform: PLATFORM): Promise<string> {
 
 async function disableClipboardEditorOverlayOnAndroid(){
   try {
-    const adb = await ADB.createADB()
-    await adb.shell('appops set com.android.systemui READ_CLIPBOARD ignore')
+    await AdbHelper.adb.shell('appops set com.android.systemui READ_CLIPBOARD ignore')
   }catch (e) {
     console.log(`Disabling clipboard overlay failed ${e}`)
   }

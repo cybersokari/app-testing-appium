@@ -1,7 +1,8 @@
 import {Page} from '../../page.ts'
 
-export class TopUpPage extends Page {
-  public fiatInput = this.$('fiat-topup-input')
-  public fiatContinueBtn = this.$('fiat-continue-btn')
-  public fiatConfirmBtn = this.$('fiat-confirm-btn')
+class TopUpPage extends Page {
+  get fiatInput() { return this.$('fiat-topup-input') }
+  get fiatContinueBtn() { return this.$('fiat-continue-btn') }
+  get fiatConfirmBtn() { return this.$('fiat-confirm-btn') }
 }
+export default new TopUpPage()

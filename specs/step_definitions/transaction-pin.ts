@@ -1,6 +1,6 @@
 import {Then, When} from "@wdio/cucumber-framework";
 import {Navigation} from "../pages/navigation.ts";
-import {ProfilePage} from "../pages/profile.ts";
+import ProfilePage from "../pages/profile.ts";
 import {browser, expect} from "@wdio/globals";
 import {SecurityPage} from "../pages/account/security.ts";
 import {ResetPinPage} from "../pages/account/security/pin/reset-pin.ts";
@@ -11,14 +11,12 @@ import {RepeatPinPage} from "../pages/account/security/pin/repeat-pin.ts";
 import {Page, ToastStatus} from "../pages/page.ts";
 
 When(/^I navigate to security settings$/, async function () {
-
     await new Navigation().profileBtn.click()
-    const profilePage = new ProfilePage()
     if (browser.isAndroid) {
-        await profilePage.androidScrollTextToView('Control your security and privacy')
-        await profilePage.securityMenuBtn.click()
+        await ProfilePage.androidScrollTextToView('Control your security and privacy')
+        await ProfilePage.securityMenuBtn.click()
     } else {
-        await profilePage.securityMenuBtn.click()
+        await ProfilePage.securityMenuBtn.click()
     }
 });
 When(/^I initiate transaction pin change$/, async function () {

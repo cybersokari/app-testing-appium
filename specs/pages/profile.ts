@@ -1,17 +1,17 @@
 import {Page} from './page.ts'
 
-export class ProfilePage extends Page {
-  public logoutBtn = this.$('logout-btn')
-  public profileMenuBtn = this.$('accounts-profile-menu')
+class ProfilePage extends Page {
+  get logoutBtn(){return this.$('logout-btn')}
+  get profileMenuBtn() {return this.$('accounts-profile-menu')}
 
-  public identityMenuBtn = this.$('accounts-identity-menu')
+  get identityMenuBtn(){return this.$('accounts-identity-menu')}
 
-  public paymentMethodMenuBtn = this.$('accounts-payment-method-menu')
+  get paymentMethodMenuBtn (){return this.$('accounts-payment-method-menu')}
 
   public hideBalanceToggle = this.$('accounts-hide-balance-toggle')
 
-  public securityMenuBtn = this.$('accounts-security-menu')
-  public notificationToggle = this.$('accounts-notifications-toggle')
+  get securityMenuBtn (){return this.$('accounts-security-menu')}
+  get notificationToggle () {return this.$('accounts-notifications-toggle')}
 
   public async enablePushNotification() {
     const toggle = this.notificationToggle
@@ -31,3 +31,4 @@ export class ProfilePage extends Page {
     }
   }
 }
+export default new ProfilePage()

@@ -1,7 +1,7 @@
 import {Given, Then, When} from "@wdio/cucumber-framework";
 import {browser, expect} from "@wdio/globals";
 import {Navigation} from "../pages/navigation.ts";
-import {ProfilePage} from "../pages/profile.ts";
+import ProfilePage from "../pages/profile.ts";
 import {SecurityPage} from "../pages/account/security.ts";
 import {ChangePasswordPage} from "../pages/account/change-password.ts";
 import {Page, ToastStatus} from "../pages/page.ts";
@@ -9,12 +9,11 @@ import {Page, ToastStatus} from "../pages/page.ts";
 
 Given(/^I navigate to change password screen$/, async function () {
     await new Navigation().profileBtn.click()
-    const profilePage = new ProfilePage()
     if (browser.isAndroid) {
-        await profilePage.androidScrollTextToView('Control your security and privacy')
-        await profilePage.securityMenuBtn.click()
+        await ProfilePage.androidScrollTextToView('Control your security and privacy')
+        await ProfilePage.securityMenuBtn.click()
     } else {
-        await profilePage.securityMenuBtn.click()
+        await ProfilePage.securityMenuBtn.click()
     }
 
     const changePasswordMenu = new SecurityPage().changePasswordMenuBtn

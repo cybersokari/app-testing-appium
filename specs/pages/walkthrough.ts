@@ -1,6 +1,8 @@
 import {Page} from './page.ts'
 
-export class WelcomePage extends Page {
-  public loginBtn = this.$('walkthrough-login-bt')
-  public getStartedBtn = this.$('walkthrough-get-started-bt')
+class WelcomePage extends Page {
+  get loginBtn(){return this.$('walkthrough-login-bt')}
+  get getStartedBtn() {return  this.$('walkthrough-get-started-bt')}
 }
+export default new WelcomePage()
+

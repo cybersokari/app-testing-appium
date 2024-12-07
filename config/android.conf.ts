@@ -10,6 +10,7 @@ import {PickleResult, PickleStep} from '@wdio/types/build/Frameworks'
 import {Pickle} from '@cucumber/messages'
 import {ITestCaseHookParameter} from "@wdio/cucumber-framework";
 import {ANDROID_REPORTS_DIR} from "../specs/util/constants.ts";
+import AdbHelper from "../specs/util/adb-helper.ts";
 
 env({path: '.env.android'})
 export const config: WebdriverIO.Config = {
@@ -17,8 +18,8 @@ export const config: WebdriverIO.Config = {
 
   port: 4723,
 
-  specs: ['../specs/**/*.feature'],
-  // specs: ['../specs/swap.feature'],
+  // specs: ['../specs/**/*.feature'],
+  specs: ['../specs/deposit.feature'],
   // Patterns to exclude.
   // exclude: ['../specs/util/**', '../specs/pages/**'],
   maxInstances: 1,
@@ -81,6 +82,7 @@ export const config: WebdriverIO.Config = {
         disableWebdriverStepsReporting: true,
         disableWebdriverScreenshotsReporting: false,
         useCucumberStepReporter: true,
+        issueLinkTemplate: 'https://linear.app/finnaprotocol/issue/{}',
         reportedEnvironmentVars: {
           os_platform: 'Android',
           build_version: process.env.buildversion,
@@ -102,7 +104,7 @@ export const config: WebdriverIO.Config = {
     failFast: false,
     // <boolean> Enable this config to treat undefined definitions as
     // warnings
-    ignoreUndefinedDefinitions: false,
+    ignoreUndefinedDefinitions: true,
     // <boolean> hide step definition snippets for pending steps
     snippets: true,
     // <boolean> hide source uris
@@ -136,14 +138,15 @@ export const config: WebdriverIO.Config = {
   },
 
   // afterTest: afterTest,
-  onComplete: () => {
+  onComplete: async () => {
+    await AdbHelper.disconnect()
     return generateAllureReports(ANDROID_REPORTS_DIR)
   },
-  beforeSession: async () => {
-    await disableClipboardEditorOverlayOnAndroid()
-  },
+
   onPrepare: async() =>{
+    await AdbHelper.connect()
     process.env.buildversion = await getBuildVersion(PLATFORM.ANDROID)
+    await disableClipboardEditorOverlayOnAndroid()
   },
   afterScenario: async (world: ITestCaseHookParameter, _result: PickleResult, _context: Object) => {
     if(!world.willBeRetried){

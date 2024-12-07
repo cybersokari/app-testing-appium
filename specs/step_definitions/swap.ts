@@ -4,10 +4,10 @@ import {getFirstInputFromCurrentScreen} from "../util/util.ts";
 import {SwapPreviewPage} from "../pages/wallet/swap/swap-preview.ts";
 import {expect} from "@wdio/globals";
 import {SwapAmountPage} from "../pages/wallet/swap/swap-amount.ts";
-import {HomePage} from "../pages/home/home.ts";
+import HomePage from "../pages/home/home.ts";
 
 Given(/^I initiate a (.*) swap$/, async function (token: string) {
-    const homePage = new HomePage()
+    const homePage = HomePage
     await homePage.swapBtn.waitForDisplayed()
     await homePage.swapBtn.click()
     const tokenBtn = page.$(`asset-${token}`)

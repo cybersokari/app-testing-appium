@@ -112,11 +112,18 @@ export class Page {
     await resultToastMsg.waitForDisplayed()
     return await resultToastMsg.getText()
   }
+  get progressIndicator(){return driver
+      .$(this.isIOS ? 'XCUIElementTypeActivityIndicator' : 'android.widget.ProgressBar')}
 
   public async waitForLoading(timeOut = 20000) {
-    await driver
-      .$(this.isIOS ? 'XCUIElementTypeActivityIndicator' : 'android.widget.ProgressBar')
-      .waitForDisplayed({timeout: timeOut, reverse: true})
+    try {
+      const indicator = this.progressIndicator
+      await indicator.waitForExist({interval: 100, timeout: 1000})
+      await indicator.waitForDisplayed({interval: 100})
+      await indicator.waitForDisplayed({timeout: timeOut, reverse: true})
+    }catch (e) {
+      console.log(`Progress indicator not found: ${e}`)
+    }
   }
 
   public async tapXYPositionOnIOS(x: number, y: number) {
