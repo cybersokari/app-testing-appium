@@ -16,6 +16,8 @@ env({path: '.env.android'})
 export const config: WebdriverIO.Config = {
   runner: 'local',
 
+  services: ['appium'],
+
   port: 4723,
 
   // specs: ['../specs/**/*.feature'],
