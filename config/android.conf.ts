@@ -1,7 +1,6 @@
 import {config as env} from 'dotenv'
 import {
   disableClipboardEditorOverlayOnAndroid,
-  generateAllureReports,
   getBuildVersion
 } from './wdio.hooks.ts'
 import {PLATFORM} from '../specs/util/util.ts'
@@ -142,7 +141,7 @@ export const config: WebdriverIO.Config = {
   // afterTest: afterTest,
   onComplete: async () => {
     await AdbHelper.disconnect()
-    return generateAllureReports(ANDROID_REPORTS_DIR)
+    // return generateAllureReports(ANDROID_REPORTS_DIR)
   },
 
   onPrepare: async() =>{

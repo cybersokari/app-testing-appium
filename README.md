@@ -1,4 +1,4 @@
-# 🚀 Finna Mobile App E2E Testing Guide
+# 🚀 Appium Testing Guide For project [Finna](https://www.finnahq.com/)
 
 ## 🛠️ Environment Setup
 

@@ -4,6 +4,7 @@ services:
     container_name: appium-android
     ports:
       - "4723:4723"
+      - "8090:8090"
     environment:
       REMOTE_ADB: true
       ANDROID_DEVICES: $ANDROID_DEVICES

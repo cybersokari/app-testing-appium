@@ -118,7 +118,7 @@ export class Page {
   public async waitForLoading(timeOut = 20000) {
     try {
       const indicator = this.progressIndicator
-      await indicator.waitForExist({interval: 100, timeout: 1000})
+      await indicator.waitForExist({interval: 100, timeout: 5000})
       await indicator.waitForDisplayed({interval: 100})
       await indicator.waitForDisplayed({timeout: timeOut, reverse: true})
     }catch (e) {
