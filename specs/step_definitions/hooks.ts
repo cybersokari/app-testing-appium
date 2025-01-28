@@ -1,11 +1,12 @@
-import MailosaurClient from "mailosaur";
+// import MailosaurClient from "mailosaur";
 import {Page} from "../pages/page.ts";
 import {BeforeAll} from "@wdio/cucumber-framework";
 
 let page : Page
-let mailosaur : MailosaurClient
+// let mailosaur : MailosaurClient
 BeforeAll(() => {
     page = new Page()
-    mailosaur = new MailosaurClient(process.env.MAILOSAUR_KEY!)
+    // mailosaur = new MailosaurClient(process.env.MAILOSAUR_KEY!)
 })
-export{page,mailosaur}
+export{page}
+// export{page,mailosaur}

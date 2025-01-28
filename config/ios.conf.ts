@@ -1,5 +1,5 @@
 import {config as env} from 'dotenv'
-import {generateAllureReports, getBuildVersion} from './wdio.hooks.ts'
+import {getBuildVersion} from './wdio.hooks.ts'
 import {PLATFORM} from '../specs/util/util.ts'
 import {driver} from '@wdio/globals'
 import {PickleResult, PickleStep} from '@wdio/types/build/Frameworks'
@@ -51,7 +51,7 @@ export const config: WebdriverIO.Config = {
   //
   // If you only want to run your tests until a specific amount of tests have failed use
   // bail (default is 0 - don't bail, run all tests).
-  bail: 5,
+  bail: 0,
   //
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.

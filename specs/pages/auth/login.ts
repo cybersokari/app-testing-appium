@@ -1,8 +1,6 @@
 import {Page} from '../page.ts'
 import {NotificationPermissionPage} from '../notification-permission.ts'
 import {Navigation} from '../navigation.ts'
-import {defaultUser} from "../../util/constants.ts";
-
 export class LoginPage extends Page {
   public emailInput = this.$('login-email-field')
 
@@ -28,8 +26,8 @@ export class LoginPage extends Page {
   }
 
   public async loginWithDefaultUser() {
-    await this.emailInput.setValue(defaultUser.email)
-    await this.passwordInput.setValue(defaultUser.password)
+    await this.emailInput.setValue(process.env.FINNA_USER_EMAIL!)
+    await this.passwordInput.setValue(process.env.FINNA_USER_PASSWORD!)
     await this.login()
   }
 }

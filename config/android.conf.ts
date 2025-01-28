@@ -19,8 +19,8 @@ export const config: WebdriverIO.Config = {
 
   port: 4723,
 
-  // specs: ['../specs/**/*.feature'],
-  specs: ['../specs/deposit.feature'],
+  specs: ['../specs/**/*.feature'],
+  // specs: ['../specs/deposit.feature'],
   // Patterns to exclude.
   // exclude: ['../specs/util/**', '../specs/pages/**'],
   maxInstances: 1,
@@ -43,7 +43,7 @@ export const config: WebdriverIO.Config = {
   logLevel: 'warn',
   // If you only want to run your tests until a specific amount of tests have failed use
   // bail (default is 0 - don't bail, run all tests).
-  bail: 5,
+  bail: 0,
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
   waitforInterval: 1000,
