@@ -45,9 +45,10 @@ async function getBuildVersion(platform: PLATFORM): Promise<string> {
   let version = ''
   try {
     if (platform === PLATFORM.ANDROID && process.env.PACKAGE_NAME) {
-      const info = await AdbHelper.adb.getPackageInfo(process.env.PACKAGE_NAME)
+      const info = await AdbHelper.adb.getPackageInfo('com.finna.protocol.stg')
       version = info.versionName ?? ''
       console.log(`Android build version ${info.versionName}`)
+      console.log(`Android build isInstalled: ${info.isInstalled}`)
     } else if (platform === PLATFORM.IOS && process.env.APP_PATH) {
       const {stdout} = await exec(
         `/usr/libexec/PlistBuddy -c print ${escapeSpacesInPath(process.env.APP_PATH)}/Info.plist | grep CFBundleShortVersionString`,

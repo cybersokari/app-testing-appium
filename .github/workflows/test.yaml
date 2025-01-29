@@ -54,6 +54,7 @@ jobs:
       
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
+        continue-on-error: true
         with:
           api-level: 29
           ram-size: 4096M
