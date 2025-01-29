@@ -69,7 +69,7 @@ jobs:
           target: firebase
           google_credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           storage_bucket: ${{ secrets.GCS_BUCKET }}
-          show_history: 'true'
-          retries: 5
+          show_history: 'false'
+          retries: 0
 
   
