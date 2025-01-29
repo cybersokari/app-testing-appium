@@ -1,6 +1,7 @@
 name: Test
 on:
   workflow_dispatch:
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -12,6 +13,7 @@ jobs:
       MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
       MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
       PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,6 +31,16 @@ jobs:
         with:
           node-version: '20'
 
+      # Add Node modules caching
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        id: npm-cache
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Setup Java JDK
         uses: actions/setup-java@v4.7.0
         with:
@@ -38,9 +50,29 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      # Add Android SDK cache
+      - name: Cache Android SDK
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.android/cache
+            ~/.android/repositories
+          key: ${{ runner.os }}-android-sdk-${{ hashFiles('~/.android/repositories') }}
+          restore-keys: |
+            ${{ runner.os }}-android-sdk-
+
       - name: Accept Android SDK Licenses
         run: yes | sdkmanager --licenses
         continue-on-error: true
+
+      # Add Appium cache
+      - name: Cache Appium
+        uses: actions/cache@v4
+        with:
+          path: ~/.appium
+          key: ${{ runner.os }}-appium-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-appium-
 
       - name: Setup Appium
         run: |
@@ -51,6 +83,7 @@ jobs:
           appium-doctor --android
 
       - name: Install wdio dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
 
       - name: Enable KVM
@@ -58,7 +91,7 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      
+
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         continue-on-error: true
@@ -75,5 +108,3 @@ jobs:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
           target: firebase
           google_credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-  
