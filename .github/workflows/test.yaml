@@ -68,7 +68,7 @@ jobs:
         run: |
           npm install -g appium
           appium --version
-          appium driver install uiautomator2
+          appium driver install uiautomator2 || true
           npm install -g appium-doctor
 
       - name: Install wdio dependencies
