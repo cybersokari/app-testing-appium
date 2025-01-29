@@ -7,10 +7,14 @@ export class NotificationPermissionPage extends Page {
   private notNowBtn = $('~Not Now')
 
   public async acceptRequest() {
-    await this.enableNotificationsBtn.click()
-    await this.handleNativeNotificationPermissionRequest(true)
+    if(await this.enableNotificationsBtn.isDisplayed()) {
+      await this.enableNotificationsBtn.click()
+      await this.handleNativeNotificationPermissionRequest(true)
+    }
   }
   public async dismissRequest() {
-    await this.notNowBtn.click()
+    if(await this.notNowBtn.isDisplayed()) {
+      await this.notNowBtn.click()
+    }
   }
 }

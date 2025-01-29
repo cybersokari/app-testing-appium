@@ -70,10 +70,6 @@ jobs:
           ram-size: 4096M
           script: |
             appium-doctor --android
-            adb shell settings put global hidden_api_policy 1
-            adb shell settings put global hidden_api_policy_pre_p_apps 1
-            adb shell settings put global hidden_api_policy_p_apps 1
-            adb shell settings put secure install_non_market_apps 0
             npm run android
 
       - name: Deploy Allure report

@@ -8,15 +8,14 @@ export class LoginPage extends Page {
 
   public continueButton = this.$('login-continue-bt')
 
-  private async login(
-    data: {acceptPushNotification: boolean} = {acceptPushNotification: false},
+  private async login(acceptPushNotification = false,
   ): Promise<void> {
     if (this.isIOS) {
       await this.closeIOSKeyboard()
     }
     await this.continueButton.click()
     await this.waitForLoading()
-    if (data.acceptPushNotification) {
+    if (acceptPushNotification) {
       await new NotificationPermissionPage().acceptRequest()
     } else {
       await new NotificationPermissionPage().dismissRequest()
