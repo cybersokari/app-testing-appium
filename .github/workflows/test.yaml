@@ -1,0 +1,62 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      APK_PATH: ${{ github.workspace }}/app-release.apk
+      FINNA_USER_EMAIL: ${{ secrets.FINNA_USER_EMAIL }}
+      FINNA_USER_PASSWORD: ${{ secrets.FINNA_USER_PASSWORD }}
+      FINNA_USER_PIN: ${{ secrets.FINNA_USER_PIN }}
+      MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
+      MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
+      PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Auth Google Cloud
+        uses: google-github-actions/auth@v2.1.7
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      - name: Set up Gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2.1.2
+        with:
+          version: '>= 416.0.0'
+      - name: Download APK from GCS
+        run: |
+          gcloud storage cp gs://${{ secrets.GCS_BUCKET }}/finna-ci/release.apk $APK_PATH
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Appium
+        run: |
+          npm install -g appium
+          appium --version
+          appium driver install uiautomator2
+          npm install -g appium-doctor
+          appium-doctor --android
+      - name: Install wdio dependencies
+        run: npm install
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      
+      - name: Android Emulator Runner
+        uses: ReactiveCircus/android-emulator-runner@v2.33.0
+        with:
+          api-level: 34
+          script: |
+            npm run android
+
+  
