@@ -21,11 +21,12 @@ workflows:
       - name: Download Android apk
         script: |
           gcloud storage cp gs://$STORAGE_BUCKET/finna-ci/release.apk $APK_PATH
-      - name: Remove Appium v1
+      - name: Upgrade Appium and install driver
         script: |
           npm uninstall -g appium
-          where appium
+          npm install -g appium
           appium --version
+          appium driver install uiautomator2
         ignore_failure: true
 
       - name: Install Appium Deps
