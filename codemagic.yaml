@@ -8,12 +8,14 @@ workflows:
         - devs
       vars:
         PACKAGE_NAME: 'com.finna.protocol.stg'
-        APK_PATH: 'build/release.apk'
-        GOOGLE_APPLICATION_CREDENTIALS: 'service-key.json'
+        APK_PATH: $CM_BUILD_DIR/build/release.apk
+        GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-key.json
+    cache:
+      cache_paths:
+        - $CM_BUILD_DIR/node_modules
     scripts:
       - name: Authenticate Google Service Account
         script: |
-          mkdir -p credentials
           echo $ALLURE_GOOGLE_KEY >> $GOOGLE_APPLICATION_CREDENTIALS
           gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT_ID --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GOOGLE_PROJECT_ID
       - name: Download Android apk
