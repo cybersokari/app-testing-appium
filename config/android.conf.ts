@@ -49,7 +49,7 @@ export const config: WebdriverIO.Config = {
   waitforInterval: 1000,
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
-  connectionRetryTimeout: 60000,
+  connectionRetryTimeout: 45000,
   //
   // Default request retries count
   connectionRetryCount: 3,
@@ -94,7 +94,7 @@ export const config: WebdriverIO.Config = {
 
   cucumberOpts: {
     // <boolean> show full backtrace for errors
-    backtrace: false,
+    backtrace: true,
     // <string[]> module used for processing required features
     requireModule: [],
     // <boolean< Treat ambiguous definitions as errors

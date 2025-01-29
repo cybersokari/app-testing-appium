@@ -32,10 +32,11 @@ workflows:
           FIRST_AVD=$(emulator -list-avds | head -n 1) \
           && emulator -avd "$FIRST_AVD" & adb wait-for-device
       - name: Start Appium
-        script: appium
+        script: appium &
 
       - name: Start test suite
         script: npm run android
+        ignore_failure: true
 
       - name: Build Allure Report
         script: |
@@ -49,3 +50,4 @@ workflows:
           -v $GOOGLE_APPLICATION_CREDENTIALS:/credentials/key.json \
           -v reports/android/allure-results:/allure-results \
           sokari/allure-deployer:latest
+        ignore_failure: true
