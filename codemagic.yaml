@@ -19,9 +19,6 @@ workflows:
       - name: Download Android apk
         script: |
           gcloud storage cp gs://$STORAGE_BUCKET/finna-ci/release.apk $APK_PATH
-      - name: Git clone Appium
-        script: |
-          git clone https://github.com/cybersokari/app-testing-appium
       - name: Install Appium Deps
         script: |
           npm config set fetch-retries 5 \
