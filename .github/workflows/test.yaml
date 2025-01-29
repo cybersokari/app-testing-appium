@@ -75,8 +75,5 @@ jobs:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
           target: firebase
           google_credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          storage_bucket: ${{ secrets.GCS_BUCKET }}
-          show_history: 'false'
-          retries: 0
 
   
