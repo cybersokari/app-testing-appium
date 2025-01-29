@@ -31,16 +31,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-#      - name: Setup Java JDK
-#        uses: actions/setup-java@v4.7.0
-#        with:
-#          distribution: 'temurin'
-#          java-version: '17'
-      - name: Install Android SDK & Accept Licenses
-        run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-29"
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
         continue-on-error: true
+
       - name: Setup Appium
         run: |
           npm install -g appium
