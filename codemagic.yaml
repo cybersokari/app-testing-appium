@@ -6,7 +6,6 @@ workflows:
     environment:
       groups:
         - devs
-        - dev
       vars:
         PACKAGE_NAME: 'com.finna.protocol.stg'
         APK_PATH: 'build/release.apk'
