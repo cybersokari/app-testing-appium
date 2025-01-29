@@ -1,6 +1,6 @@
 import {When} from "@wdio/cucumber-framework";
 import {Navigation} from "../pages/navigation.ts";
-import {WalletHomePage} from "../pages/wallet/home.ts";
+import WalletHomePage from "../pages/wallet/home.ts";
 import {SendCryptoPage} from "../pages/wallet/crypto/send-crypto.ts";
 import {SendCryptoConfirmationPage} from "../pages/wallet/crypto/confirmation.ts";
 import {$, driver} from "@wdio/globals";
@@ -12,10 +12,10 @@ When(/^I navigate to the wallet section$/, async function () {
     await new Navigation().openWalletTab()
 });
 When(/^I click on the wallet's page send button$/, async function () {
-    await new WalletHomePage().sendBtn.click()
+    await WalletHomePage.sendBtn.click()
 });
 When(/^I select USDT as the asset$/, async function () {
-    const assetBtn = new WalletHomePage().usdtAssetModalBtn
+    const assetBtn = WalletHomePage.usdtAssetModalBtn
     await assetBtn.waitForDisplayed()
     await assetBtn.click()
 });
