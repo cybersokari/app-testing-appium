@@ -38,7 +38,7 @@ export const config: WebdriverIO.Config = {
             // 'appium:platformVersion': process.env.DEVICE_OS_VERSION,
             'appium:automationName': 'UiAutomator2',
             'appium:app': process.env.APK_PATH,
-            'appium:uiautomator2ServerInstallTimeout': 30000,
+            'appium:uiautomator2ServerInstallTimeout': 60000,
         },
     ],
     // Level of logging verbosity: trace | debug | info | warn | error | silent

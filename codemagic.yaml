@@ -41,7 +41,9 @@ workflows:
           && emulator -avd "$FIRST_AVD" & adb wait-for-device
 
       - name: Start test suite
-        script: npm run android
+        script: |
+          adb devices
+          npm run android
         ignore_failure: true
 
       - name: Build Allure Report
@@ -54,6 +56,6 @@ workflows:
           -e SLACK_TOKEN=$SLACK_TOKEN \
           -e SLACK_CHANNEL=$SLACK_CHANNEL \
           -v $GOOGLE_APPLICATION_CREDENTIALS:/credentials/key.json \
-          -v reports/android/allure-results:/allure-results \
+          -v $CM_BUILD_DIR/reports/android/allure-results:/allure-results \
           sokari/allure-deployer:latest
         ignore_failure: true
