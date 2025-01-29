@@ -21,6 +21,13 @@ workflows:
       - name: Download Android apk
         script: |
           gcloud storage cp gs://$STORAGE_BUCKET/finna-ci/release.apk $APK_PATH
+      - name: Remove Appium v1
+        script: |
+          npm uninstall -g appium
+          where appium
+          appium --version
+        ignore_failure: true
+
       - name: Install Appium Deps
         script: |
           npm config set fetch-retries 5 \
@@ -31,8 +38,6 @@ workflows:
         script: |
           FIRST_AVD=$(emulator -list-avds | head -n 1) \
           && emulator -avd "$FIRST_AVD" & adb wait-for-device
-      - name: Start Appium
-        script: appium &
 
       - name: Start test suite
         script: npm run android
