@@ -13,7 +13,7 @@ jobs:
       MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
       PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Auth Google Cloud
         uses: google-github-actions/auth@v2.1.7
@@ -28,7 +28,7 @@ jobs:
           gcloud storage cp gs://${{ secrets.GCS_BUCKET }}/finna-ci/release.apk $APK_PATH
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
       - name: Setup Java JDK
@@ -56,7 +56,19 @@ jobs:
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         with:
           api-level: 29
+          ram-size: 4096M
           script: |
+            appium-doctor --android
             npm run android
+
+      - name: Deploy Allure report
+        uses: cybersokari/allure-deployer-action@v1.7.2
+        with:
+          allure_results_path: ${{ github.workspace }}/reports/android/allure-results
+          target: firebase
+          google_credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          storage_bucket: ${{ secrets.GCS_BUCKET }}
+          show_history: 'true'
+          retries: 5
 
   
