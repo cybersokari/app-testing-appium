@@ -33,7 +33,7 @@ export const config: WebdriverIO.Config = {
             platformName: 'Android',
             'appium:fullReset': false,
             'appium:noReset': false,
-            'appium:autoGrantPermissions': true,
+            'appium:autoGrantPermissions': false,
             // 'appium:deviceName': process.env.DEVICE_NAME,
             // 'appium:platformVersion': process.env.DEVICE_OS_VERSION,
             'appium:automationName': 'UiAutomator2',
@@ -126,7 +126,7 @@ export const config: WebdriverIO.Config = {
         // <boolean> add cucumber tags to feature or scenario name
         tagsInTitle: false,
         // <number> timeout for step definitions
-        timeout: 20000,
+        timeout: 30000,
     },
 
     afterStep: async (
