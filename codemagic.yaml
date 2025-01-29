@@ -31,9 +31,12 @@ workflows:
         script: |
           FIRST_AVD=$(emulator -list-avds | head -n 1) \
           && emulator -avd "$FIRST_AVD" & adb wait-for-device
-      - name: Run test
-        script: |
-          npm run android
+      - name: Start Appium
+        script: appium
+
+      - name: Start test suite
+        script: npm run android
+
       - name: Build Allure Report
         script: |
           docker run --rm \
