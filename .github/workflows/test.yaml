@@ -7,12 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APK_PATH: ${{ github.workspace }}/app-release.apk
-      FINNA_USER_EMAIL: ${{ secrets.FINNA_USER_EMAIL }}
-      FINNA_USER_PASSWORD: ${{ secrets.FINNA_USER_PASSWORD }}
-      FINNA_USER_PIN: ${{ secrets.FINNA_USER_PIN }}
-      MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
-      MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
-      PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
 
     steps:
       - uses: actions/checkout@v4
@@ -90,6 +84,13 @@ jobs:
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         continue-on-error: true
+        env:
+          FINNA_USER_EMAIL: ${{ secrets.FINNA_USER_EMAIL }}
+          FINNA_USER_PASSWORD: ${{ secrets.FINNA_USER_PASSWORD }}
+          FINNA_USER_PIN: ${{ secrets.FINNA_USER_PIN }}
+          MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
+          MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
+          PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
         with:
           api-level: 33
           ram-size: 4096M
