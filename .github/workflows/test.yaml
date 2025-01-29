@@ -93,6 +93,7 @@ jobs:
           PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
         with:
           api-level: 33
+          target: 'google_apis'
           ram-size: 4096M
           script: |
             appium-doctor --android
