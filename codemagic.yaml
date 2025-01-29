@@ -19,7 +19,7 @@ workflows:
           gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT_ID --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GOOGLE_PROJECT_ID
       - name: Download Android apk
         script: |
-          gcloud storage cp gs://gatedaccessdev.appspot.com/finna-ci/release.apk $APK_PATH
+          gcloud storage cp gs://$STORAGE_BUCKET/finna-ci/release.apk $APK_PATH
       - name: Git clone Appium
         script: |
           git clone https://github.com/cybersokari/app-testing-appium
