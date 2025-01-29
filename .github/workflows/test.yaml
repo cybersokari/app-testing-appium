@@ -61,10 +61,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-android-sdk-
 
-      - name: Accept Android SDK Licenses
-        run: yes | sdkmanager --licenses
-        continue-on-error: true
-
       # Add Appium cache
       - name: Cache Appium
         uses: actions/cache@v4
@@ -80,7 +76,6 @@ jobs:
           appium --version
           appium driver install uiautomator2
           npm install -g appium-doctor
-          appium-doctor --android
 
       - name: Install wdio dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
@@ -96,7 +91,7 @@ jobs:
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         continue-on-error: true
         with:
-          api-level: 29
+          api-level: 33
           ram-size: 4096M
           script: |
             appium-doctor --android
