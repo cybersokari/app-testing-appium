@@ -36,6 +36,11 @@ jobs:
 #        with:
 #          distribution: 'temurin'
 #          java-version: '17'
+      - name: Install Android SDK & Accept Licenses
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-29"
+        continue-on-error: true
       - name: Setup Appium
         run: |
           npm install -g appium
