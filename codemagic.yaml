@@ -1,0 +1,50 @@
+workflows:
+  android-test:
+    name: Android e2e Test
+    max_build_duration: 30
+    instance_type: linux_x2
+    environment:
+      groups:
+        - devs
+        - dev
+      vars:
+        PACKAGE_NAME: 'com.finna.protocol.stg'
+        APK_PATH: 'build/release.apk'
+        GOOGLE_APPLICATION_CREDENTIALS: 'service-key.json'
+    scripts:
+      - name: Authenticate Google Service Account
+        script: |
+          mkdir -p credentials
+          echo $ALLURE_GOOGLE_KEY >> $GOOGLE_APPLICATION_CREDENTIALS
+          gcloud auth activate-service-account $GOOGLE_SERVICE_ACCOUNT_ID --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GOOGLE_PROJECT_ID
+      - name: Download Android apk
+        script: |
+          gcloud storage cp gs://gatedaccessdev.appspot.com/finna-ci/release.apk $APK_PATH
+      - name: Git clone Appium
+        script: |
+          git clone https://github.com/cybersokari/app-testing-appium
+      - name: Install Appium Deps
+        script: |
+          npm config set fetch-retries 5 \
+          && npm config set fetch-retry-factor 10 \
+          && npm config set fetch-timeout 60000 \
+          && npm install --force
+      - name: Launch Emulator
+        script: |
+          FIRST_AVD=$(emulator -list-avds | head -n 1) \
+          && emulator -avd "$FIRST_AVD" & adb wait-for-device
+      - name: Run test
+        script: |
+          npm run android
+      - name: Build Allure Report
+        script: |
+          docker run --rm \
+          -e STORAGE_BUCKET=$STORAGE_BUCKET \
+          -e PREFIX=finna-ci/allure \
+          -e RETRIES=5 \
+          -e SHOW_HISTORY=true \
+          -e SLACK_TOKEN=$SLACK_TOKEN \
+          -e SLACK_CHANNEL=$SLACK_CHANNEL \
+          -v $GOOGLE_APPLICATION_CREDENTIALS:/credentials/key.json \
+          -v reports/android/allure-results:/allure-results \
+          sokari/allure-deployer:latest
