@@ -5,9 +5,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+          contents: write
+          actions: write
+    strategy:
+      max-parallel: 1
+      matrix:
+        api-level: [31, 32, 33]
     env:
       APK_PATH: ${{ github.workspace }}/app-release.apk
-
     steps:
       - uses: actions/checkout@v4
 
@@ -90,8 +96,9 @@ jobs:
           MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
           MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
           PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
+          OS_VERSION: ${{ matrix.api-level }}
         with:
-          api-level: 33
+          api-level: ${{ matrix.api-level }}
           target: 'google_apis'
           arch: 'x86_64'
           ram-size: 4096M
@@ -103,5 +110,7 @@ jobs:
         uses: cybersokari/allure-deployer-action@v1.7.2
         with:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
-          target: firebase
-          google_credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          target: github
+          github_subfolder: finna
+          show_history: 'true'
+          retries: 5

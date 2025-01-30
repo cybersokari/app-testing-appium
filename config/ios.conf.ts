@@ -107,6 +107,7 @@ export const config: WebdriverIO.Config = {
         useCucumberStepReporter: true,
         reportedEnvironmentVars: {
           os_platform: 'iOS',
+          os_platform_version: process.env.OS_VERSION,
           build_version: process.env.buildversion,
         },
       },

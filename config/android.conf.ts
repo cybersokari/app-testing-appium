@@ -88,6 +88,7 @@ export const config: WebdriverIO.Config = {
                 issueLinkTemplate: 'https://linear.app/finnaprotocol/issue/{}',
                 reportedEnvironmentVars: {
                     os_platform: 'Android',
+                    os_platform_version: process.env.OS_VERSION,
                     build_version: process.env.buildversion,
                 },
             },
