@@ -72,7 +72,6 @@ jobs:
           npm install -g appium-doctor
 
       - name: Install wdio dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
 
       - name: Enable KVM
