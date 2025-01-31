@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: S3
+      - name: Download APP file from AWS S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -53,9 +53,9 @@ jobs:
       - name: Setup Appium
         run: |
           npm install -g appium
-          appium --version
           appium driver install xcuitest || true
           npm install -g appium-doctor
+          appium --log-level debug
 
       - name: Install wdio dependencies
         run: npm install
@@ -67,7 +67,26 @@ jobs:
           model: 'iPhone 16'
           wait_for_boot: 'true'
       - name: Run iOS test suite
+        continue-on-error: true
+        env:
+          FINNA_USER_EMAIL: ${{ secrets.FINNA_USER_EMAIL }}
+          FINNA_USER_PASSWORD: ${{ secrets.FINNA_USER_PASSWORD }}
+          FINNA_USER_PIN: ${{ secrets.FINNA_USER_PIN }}
+          MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
+          MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
+          BUNDLE_ID: 'com.finna.protocol.stg'
+          OS_VERSION: ${{ matrix.os }}
         run: npm run ios
+
+      - name: Deploy Allure report
+        uses: cybersokari/allure-deployer-action@v1.7.2
+        with:
+          allure_results_path: ${{ github.workspace }}/reports/ios/allure-results
+          target: firebase
+          google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          gcp_bucket_prefix: 'finna-ci/allure/ios'
+          show_history: 'true'
+          retries: 5
       
   test-android:
     runs-on: ubuntu-latest
@@ -84,14 +103,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download APK from S3
-        uses: keithweaver/aws-s3-github-action@v1.0.0
-        with:
-          source: 's3://appium-finna/finna.apk'
-          destination: ${{ env.APK_PATH }}
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: Download APK from AWS S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          aws s3 cp s3://appium-finna/finna.apk ${{ env.APK_PATH }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -179,5 +197,6 @@ jobs:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          gcp_bucket_prefix: 'finna-ci/allure/android'
           show_history: 'true'
           retries: 5

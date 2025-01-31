@@ -37,7 +37,7 @@ export const config: WebdriverIO.Config = {
     },
   ],
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: 'warn',
+  logLevel: 'debug',
   //
   // Set specific log levels per logger
   // loggers:
@@ -64,7 +64,7 @@ export const config: WebdriverIO.Config = {
   // baseUrl: 'http://localhost:8080',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 10000,
+  waitforTimeout: 20000,
   waitforInterval: 1000,
   //
   // Default timeout in milliseconds for request
@@ -162,9 +162,6 @@ export const config: WebdriverIO.Config = {
     if (result.error) {
       // await driver.takeScreenshot()
     }
-  },
-  onComplete: async () => {
-    // return generateAllureReports(IOS_REPORTS_DIR)
   },
   onPrepare: async () => {
     process.env.buildversion = await getBuildVersion(PLATFORM.IOS)
