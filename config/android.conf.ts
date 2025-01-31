@@ -10,6 +10,7 @@ import {Pickle} from '@cucumber/messages'
 import {ITestCaseHookParameter} from "@wdio/cucumber-framework";
 import {ANDROID_REPORTS_DIR} from "../specs/util/constants.ts";
 import AdbHelper from "../specs/util/adb-helper.ts";
+import {AppiumAndroidCapabilities} from "@wdio/types/build/Capabilities";
 
 env({path: '.env.android'})
 export const config: WebdriverIO.Config = {
@@ -28,7 +29,7 @@ export const config: WebdriverIO.Config = {
     maxInstances: 1,
 
     capabilities: [
-        {
+        <AppiumAndroidCapabilities>{
             // capabilities for local Appium web tests on an Android Emulator
             platformName: 'Android',
             'appium:fullReset': false,

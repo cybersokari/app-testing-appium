@@ -6,6 +6,7 @@ import {PickleResult, PickleStep} from '@wdio/types/build/Frameworks'
 import {Pickle} from '@cucumber/messages'
 import {ITestCaseHookParameter} from "@wdio/cucumber-framework";
 import {IOS_REPORTS_DIR} from "../specs/util/constants.ts";
+import {AppiumXCUITestCapabilities} from "@wdio/types/build/Capabilities";
 
 env({path: '.env.ios'})
 export const config: WebdriverIO.Config = {
@@ -24,14 +25,14 @@ export const config: WebdriverIO.Config = {
   maxInstances: 1,
 
   capabilities: [
-    {
+    <AppiumXCUITestCapabilities>{
       // capabilities for local Appium web tests on an iOS Emulator
       platformName: 'iOS',
       'appium:fullReset': false,
       'appium:noReset': false,
       // 'appium:autoAcceptAlerts': true,
       // 'appium:deviceName': process.env.DEVICE_NAME,
-      // 'appium:platformVersion': process.env.DEVICE_OS_VERSION,
+      'appium:platformVersion': process.env.OS_VERSION,
       'appium:automationName': 'XCUITest',
       'appium:app': process.env.APP_PATH,
     },
