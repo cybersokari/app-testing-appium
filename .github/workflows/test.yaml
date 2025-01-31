@@ -82,6 +82,7 @@ jobs:
           MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
           BUNDLE_ID: 'com.finna.protocol.stg'
           OS_VERSION: ${{ matrix.ios }}
+          DEVICE_NAME: ${{ matrix.model }}
         run: npm run ios
 
       - name: Deploy Allure report

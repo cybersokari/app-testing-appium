@@ -32,7 +32,7 @@ export const config: WebdriverIO.Config = {
       'appium:fullReset': false,
       'appium:noReset': false,
       // 'appium:autoAcceptAlerts': true,
-      // 'appium:deviceName': process.env.DEVICE_NAME,
+      'appium:deviceName': process.env.DEVICE_NAME,
       'appium:platformVersion': process.env.OS_VERSION,
       'appium:automationName': 'XCUITest',
       'appium:app': process.env.APP_PATH,
