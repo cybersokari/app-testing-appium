@@ -1,10 +1,74 @@
 name: Test
 on:
   workflow_dispatch:
+    inputs:
+      job:
+        description: Job to run
+        required: true
+        type: choice
+        options:
+          - ios
+          - android
+        default: ios
 
 jobs:
-  test:
+  test-ios:
+    runs-on: macos-latest
+    if: ${{ github.event.inputs.job == 'ios'}}
+    permissions:
+      contents: write
+      actions: write
+    env:
+      APP_PATH: ${{ github.workspace }}/finna.app
+      ZIP_PATH: ${{ github.workspace }}/finna.zip
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download APP from S3
+        uses: keithweaver/aws-s3-github-action@v1.0.0
+        with:
+          source: 's3://appium-finna/finna.zip'
+          destination: ${{ env.ZIP_PATH }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: Unzip the app
+        run: |
+          ls ${{github.workspace}}
+          unzip ${{ env.ZIP_PATH }} -d ${{ github.workspace }}
+
+      # Add Appium cache
+      - name: Cache Appium
+        uses: actions/cache@v4
+        with:
+          path: ~/.appium
+          key: ${{ runner.os }}-appium-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-appium-
+
+      - name: Setup Appium
+        run: |
+          npm install -g appium
+          appium --version
+          appium driver install xcuitest || true
+          npm install -g appium-doctor
+
+      - name: Install wdio dependencies
+        run: npm install
+
+      - name: Launch iOS Simulator
+        uses: futureware-tech/simulator-action@v4
+        with:
+          os_version: '18.2'
+          model: 'iPhone 16'
+      - name: Run iOS tests
+        run: |
+          appium-doctor --ios
+          npm run ios
+      
+  test-android:
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.job == 'android'}}
     permissions:
           contents: write
           actions: write
@@ -110,7 +174,7 @@ jobs:
         uses: cybersokari/allure-deployer-action@v1.7.2
         with:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
-          target: github
-          github_subfolder: finna
+          target: firebase
+          google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           show_history: 'true'
           retries: 5

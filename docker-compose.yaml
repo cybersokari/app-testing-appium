@@ -20,15 +20,12 @@ services:
     cpus: 1
     mem_limit: 2048m
   allure:
-    image: sokari/allure-docker-deploy
+    image: sokari/allure-deployer
     container_name: deploy-service
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp-key.json
       - STORAGE_BUCKET=gatedaccessdev.appspot.com
-      - WEBSITE_ID=example-site
-      - WEBSITE_EXPIRES=1h
-      - KEEP_RETRIES=false
-      - KEEP_HISTORY=true
+      - RETRIES=5
+      - SHOW_HISTORY=true
     volumes:
       - ${PWD}/reports/android/allure-results:/allure-results
-      - ${PWD}/service-account-sokari.json:/credentials/gcp-key.json
+      - ${PWD}/service-account-sokari.json:/credentials/key.json
