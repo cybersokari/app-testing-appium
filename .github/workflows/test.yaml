@@ -86,7 +86,7 @@ jobs:
         run: npm run ios
 
       - name: Deploy Allure report
-        uses: cybersokari/allure-deployer-action@v1.7.3
+        uses: cybersokari/allure-deployer-action@v1.7.4
         with:
           allure_results_path: ${{ github.workspace }}/reports/ios/allure-results
           target: firebase
@@ -202,7 +202,7 @@ jobs:
             npm run android
 
       - name: Deploy Allure report
-        uses: cybersokari/allure-deployer-action@v1.7.3
+        uses: cybersokari/allure-deployer-action@v1.7.4
         with:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
           target: firebase
