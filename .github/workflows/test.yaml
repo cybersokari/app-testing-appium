@@ -18,6 +18,10 @@ jobs:
     permissions:
       contents: write
       actions: write
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: [18.2]
     env:
       APP_PATH: ${{ github.workspace }}/finna.app
       ZIP_PATH: ${{ github.workspace }}/finna.zip
@@ -59,7 +63,7 @@ jobs:
       - name: Launch iOS Simulator
         uses: futureware-tech/simulator-action@v4
         with:
-          os_version: '18.2'
+          os_version: ${{ matrix.os }}
           model: 'iPhone 16'
       - name: Run iOS tests
         run: |
