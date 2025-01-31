@@ -6,7 +6,8 @@ import {PickleResult, PickleStep} from '@wdio/types/build/Frameworks'
 import {Pickle} from '@cucumber/messages'
 import {ITestCaseHookParameter} from "@wdio/cucumber-framework";
 import {IOS_REPORTS_DIR} from "../specs/util/constants.ts";
-import {AppiumXCUITestCapabilities} from "@wdio/types/build/Capabilities";
+import {AllureReporterOptions} from "@wdio/allure-reporter";
+import {AppiumServiceConfig} from "@wdio/appium-service";
 
 env({path: '.env.ios'})
 export const config: WebdriverIO.Config = {
@@ -14,7 +15,7 @@ export const config: WebdriverIO.Config = {
 
   port: 4723,
 
-  services: [['appium', {
+  services: [['appium', <AppiumServiceConfig>{
     command: 'appium'
   }]],
 
@@ -25,7 +26,7 @@ export const config: WebdriverIO.Config = {
   maxInstances: 1,
 
   capabilities: [
-    <AppiumXCUITestCapabilities>{
+    {
       // capabilities for local Appium web tests on an iOS Emulator
       platformName: 'iOS',
       'appium:fullReset': false,
@@ -35,6 +36,7 @@ export const config: WebdriverIO.Config = {
       'appium:platformVersion': process.env.OS_VERSION,
       'appium:automationName': 'XCUITest',
       'appium:app': process.env.APP_PATH,
+      'appium:newCommandTimeout': 240,
     },
   ],
   // Level of logging verbosity: trace | debug | info | warn | error | silent
@@ -57,13 +59,7 @@ export const config: WebdriverIO.Config = {
   // If you only want to run your tests until a specific amount of tests have failed use
   // bail (default is 0 - don't bail, run all tests).
   bail: 3,
-  //
-  // Set a base URL in order to shorten url command calls. If your `url` parameter starts
-  // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
-  // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
-  // gets prepended directly.
-  // baseUrl: 'http://localhost:8080',
-  //
+
   // Default timeout for all waitFor* commands.
   waitforTimeout: 20000,
   waitforInterval: 1000,
@@ -104,7 +100,7 @@ export const config: WebdriverIO.Config = {
     ],
     [
       'allure',
-      {
+      <AllureReporterOptions>{
         outputDir: `${IOS_REPORTS_DIR}/allure-results`,
         disableWebdriverStepsReporting: true,
         disableWebdriverScreenshotsReporting: true,
