@@ -13,6 +13,10 @@ export const config: WebdriverIO.Config = {
 
   port: 4723,
 
+  services: [['appium', {
+    command: 'appium'
+  }]],
+
   specs: ['../specs/**/*.feature'],
   // specs: ['../specs/deposit.feature'],
   // Patterns to exclude.
@@ -69,7 +73,6 @@ export const config: WebdriverIO.Config = {
   //
   // Default request retries count
   connectionRetryCount: 3,
-  services: ['appium'],
 
   framework: 'cucumber',
 

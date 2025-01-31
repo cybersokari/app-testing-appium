@@ -28,14 +28,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download APP from S3
-        uses: keithweaver/aws-s3-github-action@v1.0.0
-        with:
-          source: 's3://appium-finna/finna.zip'
-          destination: ${{ env.ZIP_PATH }}
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          aws s3 cp s3://appium-finna/finna.zip ${{ env.ZIP_PATH }}
+
       - name: Unzip the app
         run: |
           ls ${{github.workspace}}
