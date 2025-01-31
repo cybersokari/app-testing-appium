@@ -21,7 +21,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        os: [18.2]
+        os: [18.1,17.4]
     env:
       APP_PATH: ${{ github.workspace }}/finna.app
       ZIP_PATH: ${{ github.workspace }}/finna.zip
@@ -38,8 +38,8 @@ jobs:
 
       - name: Unzip the app
         run: |
-          ls ${{github.workspace}}
           unzip ${{ env.ZIP_PATH }} -d ${{ github.workspace }}
+          ls ${{github.workspace}}
 
       # Add Appium cache
       - name: Cache Appium
