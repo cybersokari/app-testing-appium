@@ -21,7 +21,8 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        os: [18.1,17.4]
+        ios: [17.5]
+        xcode: [15.4]
     env:
       APP_PATH: ${{ github.workspace }}/finna.app
       ZIP_PATH: ${{ github.workspace }}/finna.zip
@@ -62,14 +63,12 @@ jobs:
       - name: Set Xcode Version
         uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
-          xcode-version: '16.2'
-      - name: Check Xcode version
-        run: xcodebuild -version
+          xcode-version: ${{ matrix.xcode }}
 
       - name: Launch iOS Simulator
         uses: futureware-tech/simulator-action@v4
         with:
-          os_version: ${{ matrix.os }}
+          os_version: ${{ matrix.ios }}
           model: 'iPhone 16'
           wait_for_boot: 'true'
       - name: Run iOS test suite
@@ -81,7 +80,7 @@ jobs:
           MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
           MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
           BUNDLE_ID: 'com.finna.protocol.stg'
-          OS_VERSION: ${{ matrix.os }}
+          OS_VERSION: ${{ matrix.ios }}
         run: npm run ios
 
       - name: Deploy Allure report
