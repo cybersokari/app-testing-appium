@@ -40,7 +40,7 @@ export const config: WebdriverIO.Config = {
     },
   ],
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: 'debug',
+  logLevel: 'warn',
   //
   // Set specific log levels per logger
   // loggers:
@@ -58,7 +58,7 @@ export const config: WebdriverIO.Config = {
   //
   // If you only want to run your tests until a specific amount of tests have failed use
   // bail (default is 0 - don't bail, run all tests).
-  bail: 3,
+  bail: 0,
 
   // Default timeout for all waitFor* commands.
   waitforTimeout: 20000,
@@ -88,27 +88,28 @@ export const config: WebdriverIO.Config = {
   // see also: https://webdriver.io/docs/dot-reporter
   reporters: [
     'spec',
-    [
-      'video',
-      {
-        saveAllVideos: false, // If true, also saves videos for successful test cases
-        videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
-        outputDir: `${IOS_REPORTS_DIR}/videos`,
-        videoRenderTimeout: 15000, // Seconds
-        onlyRecordLastFailure: true,
-      },
-    ],
+    // [
+    //   'video',
+    //   {
+    //     saveAllVideos: false, // If true, also saves videos for successful test cases
+    //     videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+    //     outputDir: `${IOS_REPORTS_DIR}/videos`,
+    //     videoRenderTimeout: 15000, // Seconds
+    //     onlyRecordLastFailure: true,
+    //   },
+    // ],
     [
       'allure',
       <AllureReporterOptions>{
         outputDir: `${IOS_REPORTS_DIR}/allure-results`,
         disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: true,
+        disableWebdriverScreenshotsReporting: false,
         useCucumberStepReporter: true,
         reportedEnvironmentVars: {
-          os_platform: 'iOS',
-          os_platform_version: process.env.OS_VERSION,
-          build_version: process.env.buildversion,
+          "OS": 'iOS',
+          "OS version": process.env.OS_VERSION,
+          "Build version": process.env.BUILD_VERSION,
+          "Device Name": process.env.DEVICE_NAME,
         },
       },
     ],
@@ -157,11 +158,11 @@ export const config: WebdriverIO.Config = {
     _context: Object,
   ) => {
     if (result.error) {
-      // await driver.takeScreenshot()
+      await driver.takeScreenshot()
     }
   },
   onPrepare: async () => {
-    process.env.buildversion = await getBuildVersion(PLATFORM.IOS)
+    process.env.BUILD_VERSION = await getBuildVersion(PLATFORM.IOS)
   },
   afterScenario: async (world: ITestCaseHookParameter, _result: PickleResult, _context: Object) => {
     if(!world.willBeRetried){

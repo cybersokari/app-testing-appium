@@ -21,9 +21,9 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        ios: [17.5]
         xcode: [15.4]
-        model: [iPhone 15]
+        ios: [17.5]
+        model: [iPhone 15,iPhone SE (3rd generation)]
     env:
       APP_PATH: ${{ github.workspace }}/finna.app
       ZIP_PATH: ${{ github.workspace }}/finna.zip

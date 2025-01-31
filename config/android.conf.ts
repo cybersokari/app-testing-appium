@@ -88,9 +88,10 @@ export const config: WebdriverIO.Config = {
                 useCucumberStepReporter: true,
                 issueLinkTemplate: 'https://linear.app/finnaprotocol/issue/{}',
                 reportedEnvironmentVars: {
-                    os_platform: 'Android',
-                    os_platform_version: process.env.OS_VERSION,
-                    build_version: process.env.buildversion,
+                    "OS": 'Android',
+                    "OS version": process.env.OS_VERSION,
+                    "Build version": process.env.BUILD_VERSION,
+                    "Device Name": process.env.DEVICE_NAME,
                 },
             },
         ],
@@ -150,7 +151,7 @@ export const config: WebdriverIO.Config = {
 
     onPrepare: async () => {
         await AdbHelper.connect()
-        process.env.buildversion = await getBuildVersion(PLATFORM.ANDROID)
+        process.env.BUILD_VERSION = await getBuildVersion(PLATFORM.ANDROID)
         await disableClipboardEditorOverlayOnAndroid()
     },
     afterScenario: async (world: ITestCaseHookParameter, _result: PickleResult, _context: Object) => {
