@@ -59,6 +59,13 @@ jobs:
       - name: Install wdio dependencies
         run: npm install
 
+      - name: Set Xcode Version
+        uses: maxim-lobanov/setup-xcode@v1.6.0
+        with:
+          xcode-version: '16.2'
+      - name: Check Xcode version
+        run: xcodebuild -version
+
       - name: Launch iOS Simulator
         uses: futureware-tech/simulator-action@v4
         with:
