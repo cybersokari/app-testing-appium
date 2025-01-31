@@ -65,10 +65,9 @@ jobs:
         with:
           os_version: ${{ matrix.os }}
           model: 'iPhone 16'
-      - name: Run iOS tests
-        run: |
-          appium-doctor --ios
-          npm run ios
+          wait_for_boot: 'true'
+      - name: Run iOS test suite
+        run: npm run ios
       
   test-android:
     runs-on: ubuntu-latest
