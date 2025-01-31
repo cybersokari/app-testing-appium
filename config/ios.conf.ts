@@ -36,7 +36,7 @@ export const config: WebdriverIO.Config = {
       'appium:platformVersion': process.env.OS_VERSION,
       'appium:automationName': 'XCUITest',
       'appium:app': process.env.APP_PATH,
-      'appium:newCommandTimeout': 240,
+      'appium:newCommandTimeout': 400,
     },
   ],
   // Level of logging verbosity: trace | debug | info | warn | error | silent

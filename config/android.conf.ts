@@ -40,6 +40,7 @@ export const config: WebdriverIO.Config = {
             'appium:automationName': 'UiAutomator2',
             'appium:app': process.env.APK_PATH,
             'appium:uiautomator2ServerInstallTimeout': 60000,
+            'appium:deviceReadyTimeout': 300,
         },
     ],
     // Level of logging verbosity: trace | debug | info | warn | error | silent
@@ -56,7 +57,6 @@ export const config: WebdriverIO.Config = {
     //
     // Default request retries count
     connectionRetryCount: 3,
-    // services: ['appium'],
 
     framework: 'cucumber',
 
