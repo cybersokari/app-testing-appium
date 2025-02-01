@@ -107,7 +107,7 @@ jobs:
           contents: write
           actions: write
     strategy:
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         api-level: [31, 32, 33]
         device: [Nexus 6]
@@ -184,7 +184,7 @@ jobs:
 #          sudo udevadm control --reload-rules
 #          sudo udevadm trigger --name-match=kvm
 
-      - name: Android Emulator Runner
+      - name: Run test in Emulator
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
         continue-on-error: true
         env:
