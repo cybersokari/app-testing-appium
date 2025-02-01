@@ -36,7 +36,7 @@ export const config: WebdriverIO.Config = {
             'appium:noReset': false,
             'appium:autoGrantPermissions': false,
             // 'appium:deviceName': process.env.DEVICE_NAME,
-            // 'appium:platformVersion': process.env.DEVICE_OS_VERSION,
+            // 'appium:platformVersion': process.env.OS_VERSION,
             'appium:automationName': 'UiAutomator2',
             'appium:app': process.env.APK_PATH,
             'appium:uiautomator2ServerInstallTimeout': 60000,
@@ -69,16 +69,6 @@ export const config: WebdriverIO.Config = {
     // specFileRetriesDeferred: false,
     reporters: [
         'spec',
-        // [
-        //   'video',
-        //   {
-        //     saveAllVideos: false, // If true, also saves videos for successful test cases
-        //     videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
-        //     outputDir: `${ANDROID_REPORTS_DIR}/videos`,
-        //     videoRenderTimeout: 10000, // Seconds
-        //     onlyRecordLastFailure: true,
-        //   },
-        // ],
         [
             'allure',
             <AllureReporterOptions>{
@@ -89,9 +79,9 @@ export const config: WebdriverIO.Config = {
                 issueLinkTemplate: 'https://linear.app/finnaprotocol/issue/{}',
                 reportedEnvironmentVars: {
                     "OS": 'Android',
-                    "OS version": process.env.OS_VERSION,
-                    "Build version": process.env.BUILD_VERSION,
-                    "Device Name": process.env.DEVICE_NAME,
+                    "OS-version": process.env.OS_VERSION,
+                    "Build-version": process.env.BUILD_VERSION,
+                    "Device-name": process.env.DEVICE_NAME,
                 },
             },
         ],
@@ -150,7 +140,6 @@ export const config: WebdriverIO.Config = {
     },
 
     onPrepare: async () => {
-        await AdbHelper.connect()
         process.env.BUILD_VERSION = await getBuildVersion(PLATFORM.ANDROID)
         await disableClipboardEditorOverlayOnAndroid()
     },

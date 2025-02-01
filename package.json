@@ -5,8 +5,6 @@
     "@wdio/types": "^9.2.2",
     "appium-adb": "^12.7.0",
     "dotenv": "^16.4.5",
-    "firebase-tools": "^13.27.0",
-    "wdio-video-reporter": "^6.1.1",
     "webdriverio": "^9.2.8"
   },
   "devDependencies": {

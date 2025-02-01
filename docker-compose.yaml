@@ -19,13 +19,3 @@ services:
       - /dev/bus/usb:/dev/bus/usb
     cpus: 1
     mem_limit: 2048m
-  allure:
-    image: sokari/allure-deployer
-    container_name: deploy-service
-    environment:
-      - STORAGE_BUCKET=gatedaccessdev.appspot.com
-      - RETRIES=5
-      - SHOW_HISTORY=true
-    volumes:
-      - ${PWD}/reports/android/allure-results:/allure-results
-      - ${PWD}/service-account-sokari.json:/credentials/key.json

@@ -17,9 +17,11 @@ class AdbHelper {
         }
         return this._adb
     }
-    public async connect(){
-        if(this._adb) return
-        this._adb = await ADB.createADB()
+    public async connect(): Promise<ADB> {
+        if(!this._adb){
+            this._adb = await ADB.createADB()
+        }
+        return this._adb
     }
     public async disconnect(){
         await this._adb?.killServer()
