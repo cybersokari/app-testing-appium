@@ -93,6 +93,7 @@ jobs:
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcp_bucket_prefix: 'finna-ci-ios'
           show_history: 'true'
+          storage_bucket: ${{ secrets.GCS_BUCKET }}
           retries: 5
           slack_token: ${{ secrets.SLACK_TOKEN }}
           slack_channel: ${{ secrets.SLACK_CHANNEL }}
@@ -207,6 +208,7 @@ jobs:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+          storage_bucket: ${{ secrets.GCS_BUCKET }}
           gcp_bucket_prefix: 'finna-ci-android'
           show_history: 'true'
           retries: 5
