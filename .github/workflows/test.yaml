@@ -86,12 +86,12 @@ jobs:
         run: npm run ios
 
       - name: Deploy Allure report
-        uses: cybersokari/allure-deployer-action@v1.7.4
+        uses: cybersokari/allure-deployer-action@v1.7.5
         with:
           allure_results_path: ${{ github.workspace }}/reports/ios/allure-results
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-          gcp_bucket_prefix: 'finna-ci/allure/ios'
+          gcp_bucket_prefix: 'finna-ci-ios'
           show_history: 'true'
           retries: 5
           slack_token: ${{ secrets.SLACK_TOKEN }}
@@ -202,12 +202,12 @@ jobs:
             npm run android
 
       - name: Deploy Allure report
-        uses: cybersokari/allure-deployer-action@v1.7.4
+        uses: cybersokari/allure-deployer-action@v1.7.5
         with:
           allure_results_path: ${{ github.workspace }}/reports/android/allure-results
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-          gcp_bucket_prefix: 'finna-ci/allure/android'
+          gcp_bucket_prefix: 'finna-ci-android'
           show_history: 'true'
           retries: 5
           slack_token: ${{ secrets.SLACK_TOKEN }}
