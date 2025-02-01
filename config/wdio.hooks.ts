@@ -6,7 +6,7 @@ const exec = util.promisify(require('child_process').exec)
 async function getBuildVersion(platform: PLATFORM): Promise<string> {
   let version = ''
   try {
-    if (platform === PLATFORM.ANDROID && process.env.PACKAGE_NAME) {
+    if (platform === PLATFORM.ANDROID && process.env.APK_PATH) {
 
       const androidHome = process.env.ANDROID_HOME
       const apkPath = process.env.APK_PATH
@@ -39,6 +39,7 @@ async function getBuildVersion(platform: PLATFORM): Promise<string> {
 async function disableClipboardEditorOverlayOnAndroid(){
   try {
     await (await AdbHelper.connect()).shell('appops set com.android.systemui READ_CLIPBOARD ignore')
+    await AdbHelper.disconnect()
   }catch (e) {
     console.log(`Disabling clipboard overlay failed ${e}`)
   }

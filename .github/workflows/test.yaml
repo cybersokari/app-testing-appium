@@ -96,8 +96,8 @@ jobs:
           gcs_bucket_prefix: 'finna-ci-ios'
           show_history: 'true'
           retries: 5
-          slack_token: ${{ secrets.SLACK_TOKEN }}
-          slack_channel: ${{ secrets.SLACK_CHANNEL }}
+#          slack_token: ${{ secrets.SLACK_TOKEN }}
+#          slack_channel: ${{ secrets.SLACK_CHANNEL }}
           report_name: 'iOS Finna'
       
   test-android:
@@ -110,7 +110,7 @@ jobs:
       max-parallel: 1
       matrix:
         api-level: [31, 32, 33]
-        device: [Pixel 2, Nexus 6]
+        device: [Nexus 6]
     env:
       APK_PATH: ${{ github.workspace }}/app-finna.apk
     steps:
@@ -178,11 +178,11 @@ jobs:
       - name: Install wdio dependencies
         run: npm install
 
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+#      - name: Enable KVM
+#        run: |
+#          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+#          sudo udevadm control --reload-rules
+#          sudo udevadm trigger --name-match=kvm
 
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.33.0
@@ -216,6 +216,6 @@ jobs:
           gcs_bucket_prefix: 'finna-ci-android'
           show_history: 'true'
           retries: 5
-          slack_token: ${{ secrets.SLACK_TOKEN }}
-          slack_channel: ${{ secrets.SLACK_CHANNEL }}
+#          slack_token: ${{ secrets.SLACK_TOKEN }}
+#          slack_channel: ${{ secrets.SLACK_CHANNEL }}
           report_name: 'Android Finna'

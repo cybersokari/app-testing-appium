@@ -9,7 +9,6 @@ import {PickleResult, PickleStep} from '@wdio/types/build/Frameworks'
 import {Pickle} from '@cucumber/messages'
 import {ITestCaseHookParameter} from "@wdio/cucumber-framework";
 import {ANDROID_REPORTS_DIR} from "../specs/util/constants.ts";
-import AdbHelper from "../specs/util/adb-helper.ts";
 import {AllureReporterOptions} from "@wdio/allure-reporter";
 
 env({path: '.env.android'})
@@ -131,12 +130,6 @@ export const config: WebdriverIO.Config = {
         if (result.error) {
             await driver.takeScreenshot()
         }
-    },
-
-    // afterTest: afterTest,
-    onComplete: async () => {
-        await AdbHelper.disconnect()
-        // return generateAllureReports(ANDROID_REPORTS_DIR)
     },
 
     onPrepare: async () => {
