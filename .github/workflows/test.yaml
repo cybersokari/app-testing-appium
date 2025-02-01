@@ -107,7 +107,7 @@ jobs:
           contents: write
           actions: write
     strategy:
-      max-parallel: 3
+      max-parallel: 1
       matrix:
         api-level: [31, 32, 33]
         device: [Nexus 6]
