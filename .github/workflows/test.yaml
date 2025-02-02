@@ -10,6 +10,10 @@ on:
           - ios
           - android
         default: ios
+      slack:
+        description: Send report info to Slack
+        type: boolean
+        default: false
 
 jobs:
   test-ios:
@@ -96,8 +100,8 @@ jobs:
           gcs_bucket_prefix: 'finna-ci-ios'
           show_history: 'true'
           retries: 5
-#          slack_token: ${{ secrets.SLACK_TOKEN }}
-#          slack_channel: ${{ secrets.SLACK_CHANNEL }}
+          slack_token: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_TOKEN || '' }}
+          slack_channel: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_CHANNEL || '' }}
           report_name: 'iOS Finna'
       
   test-android:
@@ -203,6 +207,7 @@ jobs:
           profile: ${{matrix.device}}
           ram-size: 4096M
           script: |
+            $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager list device || true
             appium driver doctor uiautomator2 || true
             npm run android
 
@@ -216,6 +221,6 @@ jobs:
           gcs_bucket_prefix: 'finna-ci-android'
           show_history: 'true'
           retries: 5
-#          slack_token: ${{ secrets.SLACK_TOKEN }}
-#          slack_channel: ${{ secrets.SLACK_CHANNEL }}
+          slack_token: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_TOKEN || '' }}
+          slack_channel: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_CHANNEL || '' }}
           report_name: 'Android Finna'
