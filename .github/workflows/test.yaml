@@ -217,7 +217,7 @@ jobs:
           script: |
             $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager list device || true
             appium driver doctor uiautomator2 || true
-            npm run android
+            npm run android-prod
 
       - name: Deploy Allure report
         uses: cybersokari/allure-deployer-action@v1.7.6
