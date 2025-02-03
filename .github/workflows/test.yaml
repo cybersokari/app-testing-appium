@@ -10,6 +10,13 @@ on:
           - ios
           - android
         default: ios
+      flavor:
+        description: Build Flavor
+        type: choice
+        default: stg
+        options:
+          - stg
+          - prod
       slack:
         description: Send report info to Slack
         type: boolean
@@ -126,7 +133,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
-          aws s3 cp s3://appium-finna/finna.apk ${{ env.APK_PATH }}
+          aws s3 cp s3://appium-finna/${{github.event.inputs.flavor == 'stg' && 'finna.apk' || 'finna-prod.apk' }} \
+          ${{ env.APK_PATH }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

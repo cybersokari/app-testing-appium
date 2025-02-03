@@ -1,52 +1,46 @@
 import {PLATFORM} from '../specs/util/util.ts'
-import util = require('node:util')
+import util from 'node:util'
 import AdbHelper from "../specs/util/adb-helper.ts";
-const exec = util.promisify(require('child_process').exec)
 
-async function getBuildVersion(platform: PLATFORM): Promise<string> {
-  let version = ''
+const exec = util.promisify(require('child_process').exec);
+
+const extractVersionInfo = async (platform: PLATFORM, type: 'code' | 'name'): Promise<string> => {
   try {
     if (platform === PLATFORM.ANDROID && process.env.APK_PATH) {
-
-      const androidHome = process.env.ANDROID_HOME
-      const apkPath = process.env.APK_PATH
-
-      if(apkPath && androidHome) {
-        const command = `${androidHome}/cmdline-tools/latest/bin/apkanalyzer manifest version-name ${apkPath}`;
-        const {stdout, stderr} = await exec(command);
-        if (stderr) {
-          console.error(`stderr: ${stderr}`);
-        } else {
-          version = stdout.trim();
-          console.log(`App version: ${version}`);
-        }
+      const {ANDROID_HOME, APK_PATH} = process.env;
+      if (APK_PATH && ANDROID_HOME) {
+        const command = `${ANDROID_HOME}/cmdline-tools/latest/bin/apkanalyzer manifest version-${type === 'code' ? 'code' : 'name'} ${APK_PATH}`;
+        const {stdout} = await exec(command);
+        console.log(`App ${type} version: ${stdout}`);
+        return stdout.trim();
       }
-
     } else if (platform === PLATFORM.IOS && process.env.APP_PATH) {
+      const grepKey = type === 'code' ? 'CFBundleVersion' : 'CFBundleShortVersionString';
       const {stdout} = await exec(
-        `/usr/libexec/PlistBuddy -c print ${escapeSpacesInPath(process.env.APP_PATH)}/Info.plist | grep CFBundleShortVersionString`
-      )
-      const array = stdout.toString().split(' ')
-      version = array[array.length -1]
-      console.log(`iOS build version ${version}`)
+          `/usr/libexec/PlistBuddy -c print ${escapeSpacesInPath(process.env.APP_PATH)}/Info.plist | grep ${grepKey}`
+      );
+      const version = stdout.toString().split(' ').pop()?.trim() || '';
+      console.log(`iOS ${type} version: ${version}`);
+      return version;
     }
   } catch (e) {
-    console.log(`Error getting build info ${e}`)
+    console.error(`Error getting build info: ${e}`);
   }
-  return version
-}
+  return '';
+};
 
-async function disableClipboardEditorOverlayOnAndroid(){
+const getVersionCode = (platform: PLATFORM) => extractVersionInfo(platform, 'code');
+const getVersion = (platform: PLATFORM) => extractVersionInfo(platform, 'name');
+
+const disableClipboardEditorOverlayOnAndroid = async () => {
   try {
-    await (await AdbHelper.connect()).shell('appops set com.android.systemui READ_CLIPBOARD ignore')
-    await AdbHelper.disconnect()
-  }catch (e) {
-    console.log(`Disabling clipboard overlay failed ${e}`)
+    await (await AdbHelper.connect()).shell('appops set com.android.systemui READ_CLIPBOARD ignore');
+    await AdbHelper.disconnect();
+  } catch (e) {
+    console.error(`Disabling clipboard overlay failed: ${e}`);
   }
-}
+};
 
-function escapeSpacesInPath(path: string): string {
-  return path.replace(/ /g, '\\ ');
-}
+const escapeSpacesInPath = (path: string): string => path.replace(/ /g, '\\ ');
 
-export {getBuildVersion, disableClipboardEditorOverlayOnAndroid}
+export {getVersionCode, getVersion, disableClipboardEditorOverlayOnAndroid};

@@ -5,7 +5,7 @@ import {Navigation} from "../pages/navigation.ts";
 import {NotificationPermissionPage} from "../pages/notification-permission.ts";
 import ProfilePage from "../pages/profile.ts";
 import {SignupPage} from "../pages/auth/signup.ts";
-import {$, driver} from "@wdio/globals";
+import {driver} from "@wdio/globals";
 import {VerifyPage} from "../pages/auth/verify.ts";
 import {SetupPinPage} from "../pages/auth/setup-pin.ts";
 import {BiometricsPage} from "../pages/auth/biometrics.ts";
@@ -59,11 +59,7 @@ When(/^I enter a new email and (.*) and click continue$/, async function (validP
     if (driver.isIOS) {
         await signupPage.closeIOSKeyboard()
     }
-    // TODO: Find out why accessibility ID does not work for this iOS element
-    const signUpContinueBtn = driver.isIOS
-        ? $('//XCUIElementTypeOther[@name="signup-continue-bt"]')
-        : signupPage.continueBtn
-    await signUpContinueBtn.click()
+    await signupPage.continueBtn.click()
     this.newEmail = tempEmail
     await signupPage.waitForLoading()
 });

@@ -1,7 +1,7 @@
 import {config as env} from 'dotenv'
 import {
     disableClipboardEditorOverlayOnAndroid,
-    getBuildVersion
+    getVersion, getVersionCode
 } from './wdio.hooks.ts'
 import {PLATFORM} from '../specs/util/util.ts'
 import {driver} from '@wdio/globals'
@@ -80,6 +80,7 @@ export const config: WebdriverIO.Config = {
                     "OS": 'Android',
                     "OS-version": process.env.OS_VERSION,
                     "Build-version": process.env.BUILD_VERSION,
+                    "Build-number": process.env.BUILD_NUMBER,
                     "Device-name": process.env.DEVICE_NAME,
                 },
             },
@@ -133,8 +134,11 @@ export const config: WebdriverIO.Config = {
     },
 
     onPrepare: async () => {
-        process.env.BUILD_VERSION = await getBuildVersion(PLATFORM.ANDROID)
-        await disableClipboardEditorOverlayOnAndroid()
+        await Promise.all([
+            process.env.BUILD_VERSION = await getVersion(PLATFORM.ANDROID),
+            process.env.BUILD_NUMBER = await getVersionCode(PLATFORM.ANDROID),
+            disableClipboardEditorOverlayOnAndroid()
+        ])
     },
     afterScenario: async (world: ITestCaseHookParameter, _result: PickleResult, _context: Object) => {
         if (!world.willBeRetried) {

@@ -2,7 +2,7 @@ Feature: Loan
   Background:
     Given I am logged into the application
 
-  @allure.label.id:LOAN-1
+
   Scenario Outline: Apply for Naira loan
     Given I am on loan section
     When I apply for a loan of <amount>
@@ -12,7 +12,7 @@ Feature: Loan
       | amount |
       | 50000  |
 
-  @allure.label.id:LOAN-2
+
   Scenario: Repay latest loan in full
     Given I am on loan section
     When I repay the latest loan in full
