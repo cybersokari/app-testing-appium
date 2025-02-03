@@ -38,6 +38,7 @@ jobs:
       APP_PATH: ${{ github.workspace }}/finna.app
       ZIP_PATH: ${{ github.workspace }}/finna.zip
       XCODE_VERSION: 15.4
+      PROD: ${{github.event.inputs.flavor == 'prod' && 'true' || 'false'}}
     steps:
       - uses: actions/checkout@v4
 
@@ -47,7 +48,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
-          aws s3 cp s3://appium-finna/finna.zip ${{ env.ZIP_PATH }}
+          aws s3 cp s3://appium-finna/${{github.event.inputs.flavor == 'stg' && 'finna.zip' || 'finna-prod.zip' }} \
+          ${{ env.ZIP_PATH }}
 
       - name: Unzip the app
         run: |
@@ -95,7 +97,7 @@ jobs:
           DEVICE_NAME: ${{ matrix.model }}
         run: |
           appium driver doctor xcuitest || true
-          npm run ios
+          npm run ios${{github.event.inputs.flavor == 'prod' && '-prod' || '' }}
 
       - name: Deploy Allure report
         uses: cybersokari/allure-deployer-action@v1.7.6
@@ -124,6 +126,7 @@ jobs:
         device: [Nexus 6]
     env:
       APK_PATH: ${{ github.workspace }}/app-finna.apk
+      PROD: ${{github.event.inputs.flavor == 'prod' && 'true' || 'false'}}
     steps:
       - uses: actions/checkout@v4
 
@@ -217,7 +220,7 @@ jobs:
           script: |
             $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager list device || true
             appium driver doctor uiautomator2 || true
-            npm run android-prod
+            npm run android${{github.event.inputs.flavor == 'prod' && '-prod' || '' }}
 
       - name: Deploy Allure report
         uses: cybersokari/allure-deployer-action@v1.7.6

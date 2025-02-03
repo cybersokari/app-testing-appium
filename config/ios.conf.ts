@@ -101,6 +101,7 @@ export const config: WebdriverIO.Config = {
           "Build-version": process.env.BUILD_VERSION,
           "Build-number": process.env.BUILD_NUMBER,
           "Device-name": process.env.DEVICE_NAME,
+          Environment: process.env.PROD == 'true' ? 'Production' : 'Staging',
         },
       },
     ],

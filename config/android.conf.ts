@@ -77,11 +77,12 @@ export const config: WebdriverIO.Config = {
                 useCucumberStepReporter: true,
                 issueLinkTemplate: 'https://linear.app/finnaprotocol/issue/{}',
                 reportedEnvironmentVars: {
-                    "OS": 'Android',
+                    OS: 'Android',
                     "OS-version": process.env.OS_VERSION,
                     "Build-version": process.env.BUILD_VERSION,
                     "Build-number": process.env.BUILD_NUMBER,
                     "Device-name": process.env.DEVICE_NAME,
+                    Environment: process.env.PROD == 'true' ? 'Production' : 'Staging',
                 },
             },
         ],

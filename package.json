@@ -29,9 +29,6 @@
     "android": "wdio run config/android.conf.ts",
     "android-prod": "wdio run config/android-prod.conf.ts",
     "ios": "wdio run config/ios.conf.ts",
-    "android-report": "npx allure open reports/android/allure-report",
-    "ios-report": "npx allure open reports/ios/allure-report",
-    "deploy-android": "ts-node firebase-hosting/deploy.ts android",
-    "deploy-ios": "ts-node firebase-hosting/deploy.ts ios"
+    "ios-prod": "wdio run config/ios-prod.conf.ts"
   }
 }
