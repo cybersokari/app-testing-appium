@@ -30,9 +30,9 @@ jobs:
       contents: write
       actions: write
     strategy:
-      max-parallel: 1
+      max-parallel: 3
       matrix:
-        ios: [17.5]
+        os: [17.5]
         model: [iPhone 15,iPhone SE (3rd generation)]
     env:
       APP_PATH: ${{ github.workspace }}/finna.app
@@ -80,7 +80,7 @@ jobs:
       - name: Launch iOS Simulator
         uses: futureware-tech/simulator-action@v4
         with:
-          os_version: ${{ matrix.ios }}
+          os_version: ${{ matrix.os }}
           model: ${{ matrix.model }}
           wait_for_boot: 'true'
 
@@ -93,7 +93,7 @@ jobs:
           MAILOSAUR_ID: ${{ secrets.MAILOSAUR_ID }}
           MAILOSAUR_KEY: ${{ secrets.MAILOSAUR_KEY }}
           BUNDLE_ID: 'com.finna.protocol.stg'
-          OS_VERSION: ${{ matrix.ios }}
+          OS_VERSION: ${{ matrix.os }}
           DEVICE_NAME: ${{ matrix.model }}
         run: |
           appium driver doctor xcuitest || true
@@ -106,7 +106,7 @@ jobs:
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcs_bucket: ${{ secrets.GCS_BUCKET }}
-          gcs_bucket_prefix: 'finna-ci-ios'
+          gcs_bucket_prefix: 'finna-ci-ios/${{matrix.os}}'
           show_history: 'true'
           retries: 5
           slack_token: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_TOKEN || '' }}
@@ -120,7 +120,7 @@ jobs:
           contents: write
           actions: write
     strategy:
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         api-level: [31, 32, 33]
         device: [Nexus 6]
@@ -229,7 +229,7 @@ jobs:
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcs_bucket: ${{ secrets.GCS_BUCKET }}
-          gcs_bucket_prefix: 'finna-ci-android'
+          gcs_bucket_prefix: 'finna-ci-android/${{matrix.api-level}}'
           show_history: 'true'
           retries: 5
           slack_token: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_TOKEN || '' }}
