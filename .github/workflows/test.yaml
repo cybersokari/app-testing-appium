@@ -1,4 +1,4 @@
-name: Test
+name: Test App
 on:
   workflow_dispatch:
     inputs:
@@ -106,7 +106,7 @@ jobs:
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcs_bucket: ${{ secrets.GCS_BUCKET }}
-          gcs_bucket_prefix: 'finna-ci-ios/${{matrix.os}}'
+          gcs_bucket_prefix: 'finna-ci-ios/${{github.event.inputs.flavor}}/${{matrix.os}}'
           show_history: 'true'
           retries: 5
           slack_token: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_TOKEN || '' }}
@@ -229,7 +229,7 @@ jobs:
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcs_bucket: ${{ secrets.GCS_BUCKET }}
-          gcs_bucket_prefix: 'finna-ci-android/${{matrix.api-level}}'
+          gcs_bucket_prefix: 'finna-ci-android/${{github.event.inputs.flavor}}/${{matrix.api-level}}'
           show_history: 'true'
           retries: 5
           slack_token: ${{ github.event.inputs.slack == 'true' && secrets.SLACK_TOKEN || '' }}
