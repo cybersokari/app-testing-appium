@@ -27,6 +27,7 @@
   },
   "scripts": {
     "android": "wdio run config/android.conf.ts",
+    "android-prod": "wdio run config/android-prod.conf.ts",
     "ios": "wdio run config/ios.conf.ts",
     "android-report": "npx allure open reports/android/allure-report",
     "ios-report": "npx allure open reports/ios/allure-report",
