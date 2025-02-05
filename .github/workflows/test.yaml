@@ -38,7 +38,7 @@ jobs:
       contents: write
       actions: write
     strategy:
-      max-parallel: ${{github.event.inputs.max-parallel}}
+      max-parallel: ${{fromJson(github.event.inputs.max-parallel)}}
       matrix:
         os: [17.5]
         model: [iPhone 15,iPhone SE (3rd generation)]
