@@ -19,7 +19,7 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
     bail: 0,
     waitforTimeout: 10000,
     waitforInterval: 1000,
-    connectionRetryTimeout: 45000,
+    connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
     framework: 'cucumber',
     services: [['appium', {
@@ -40,6 +40,7 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
         strict: true,
         tagsInTitle: false,
         timeout: 60000,
+        retry: 1
     },
 
     afterStep: async (

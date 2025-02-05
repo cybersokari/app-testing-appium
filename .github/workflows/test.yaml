@@ -105,7 +105,7 @@ jobs:
           DEVICE_NAME: ${{ matrix.model }}
           PLATFORM: 'iOS'
         run: |
-          appium driver doctor xcuitest || true
+          xcrun simctl list devices "${{ matrix.model }}" | grep -i "booted\|shutdown" || true
           npm run ios${{github.event.inputs.flavor == 'prod' && '-prod' || '' }}
 
       - name: Deploy Allure report
