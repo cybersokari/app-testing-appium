@@ -1,6 +1,6 @@
 import {PLATFORM} from '../specs/util/util.ts'
 import util from 'node:util'
-import AdbHelper from "../specs/util/adb-helper.ts";
+import ADB from "appium-adb";
 
 const exec = util.promisify(require('child_process').exec);
 
@@ -32,14 +32,14 @@ const extractVersionInfo = async (platform: PLATFORM, type: 'code' | 'name'): Pr
 const getVersionCode = (platform: PLATFORM) => extractVersionInfo(platform, 'code');
 const getVersion = (platform: PLATFORM) => extractVersionInfo(platform, 'name');
 
-const disableClipboardEditorOverlayOnAndroid = async () => {
+const disableClipboardEditorOverlayOnAndroid = async (adb: ADB) => {
   try {
-    await (await AdbHelper.connect()).shell('appops set com.android.systemui READ_CLIPBOARD ignore');
-    await AdbHelper.disconnect();
+    await adb.shell('appops set com.android.systemui READ_CLIPBOARD ignore');
   } catch (e) {
     console.error(`Disabling clipboard overlay failed: ${e}`);
   }
 };
+
 
 const escapeSpacesInPath = (path: string): string => path.replace(/ /g, '\\ ');
 
