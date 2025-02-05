@@ -117,10 +117,9 @@ export class Page {
 
   public async waitForLoading(timeOut = 20000) {
     try {
-      const indicator = this.progressIndicator
-      await indicator.waitForExist({interval: 100, timeout: 5000})
-      await indicator.waitForDisplayed({interval: 100}) // Wait for the indicator to be visible
-      await indicator.waitForDisplayed({timeout: timeOut, reverse: true}) // Wait for the indicator to be invisible
+      await this.progressIndicator.waitForExist({interval: 100, timeout: 5000})
+      await this.progressIndicator.waitForDisplayed({interval: 100}) // Wait for the indicator to be visible
+      await this.progressIndicator.waitForDisplayed({timeout: timeOut, reverse: true}) // Wait for the indicator to be invisible
     }catch (e) {
       console.log(`Progress indicator not found: ${e}`)
     }

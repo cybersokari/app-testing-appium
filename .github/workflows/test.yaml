@@ -129,7 +129,7 @@ jobs:
           contents: write
           actions: write
     strategy:
-      max-parallel: 3
+      max-parallel: ${{fromJson(github.event.inputs.max-parallel)}}
       matrix:
         api-level: [31, 32, 33]
         device: [Nexus 6]
@@ -229,7 +229,6 @@ jobs:
           ram-size: 4096M
           script: |
             $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager list device || true
-            appium driver doctor uiautomator2 || true
             npm run android${{github.event.inputs.flavor == 'prod' && '-prod' || '' }}
 
       - name: Deploy Allure report
