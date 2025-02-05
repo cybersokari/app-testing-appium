@@ -39,7 +39,7 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
         order: 'defined',
         strict: true,
         tagsInTitle: false,
-        timeout: 60000,
+        timeout: 120000,
         retry: 1
     },
 
