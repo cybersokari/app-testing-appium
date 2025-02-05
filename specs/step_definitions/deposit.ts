@@ -13,6 +13,7 @@ import {page} from "./hooks.ts";
 
 
 Given(/^I am logged into the application$/, async function () {
+  await WelcomePage.loginBtn.waitForDisplayed({timeout: 30000})
   await WelcomePage.loginBtn.click()
   await new LoginPage().loginWithDefaultUser()
 })
