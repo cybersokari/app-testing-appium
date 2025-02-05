@@ -4,6 +4,7 @@ import {baseConfig} from "./base.conf.ts";
 
 export const config: WebdriverIO.Config = {
     ...baseConfig,
+    bail: 5,
     capabilities: [
         {
             platformName: 'Android',

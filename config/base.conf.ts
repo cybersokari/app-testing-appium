@@ -16,7 +16,6 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
     maxInstances: 1,
     specs: ['../specs/**/*.feature'],
     logLevel: 'warn',
-    bail: 0,
     waitforTimeout: 20000,
     waitforInterval: 1000,
     connectionRetryTimeout: 120000,
