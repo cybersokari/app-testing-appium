@@ -131,7 +131,10 @@ dist
 
 node_modules
 build
+##Allure
+allure-report
 reports
+
 .env.ios
 .env.android
 chromedriver-mobile
@@ -140,3 +143,5 @@ chromedriver-mobile
 .idea
 *.iml
 service-account.json
+
+

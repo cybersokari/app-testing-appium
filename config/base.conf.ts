@@ -5,6 +5,11 @@ import {Pickle} from '@cucumber/messages'
 import {ITestCaseHookParameter} from "@wdio/cucumber-framework";
 import {CucumberOptions} from "@wdio/cucumber-framework/build/types";
 
+import {config as env} from 'dotenv';
+import {AllureReporterOptions} from "@wdio/allure-reporter";
+
+const outputDir = 'allure-results';
+env({path: '.env'});
 export const baseConfig: Partial<WebdriverIO.Config> = {
     runner: 'local',
     port: 4723,
@@ -21,7 +26,7 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
         command: 'appium'
     }]],
 
-    cucumberOpts:<CucumberOptions> {
+    cucumberOpts: <CucumberOptions>{
         backtrace: true,
         failAmbiguousDefinitions: true,
         failFast: false,
@@ -56,14 +61,21 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
 
     reporters: [
         'spec',
-        ['video', { saveAllVideos: true, videoSlowdownMultiplier: 3, videoRenderTimeout: 15 }],
-        ['allure', {
+        ['video', {outputDir: `${outputDir}/video`, saveAllVideos: true, videoSlowdownMultiplier: 4, videoRenderTimeout: 5000}],
+        ['allure', <AllureReporterOptions>{
+            outputDir,
             disableWebdriverStepsReporting: true,
             disableWebdriverScreenshotsReporting: true,
             useCucumberStepReporter: true,
             reportedEnvironmentVars: {
                 Environment: process.env.PROD === 'true' ? 'Production' : 'Staging',
+                OS: process.env.PLATFORM,
+                'OS-version': process.env.OS_VERSION,
+                'Build-version': process.env.BUILD_VERSION,
+                'Build-number': process.env.BUILD_NUMBER,
+                'Device-name': process.env.DEVICE_NAME,
             },
+            issueLinkTemplate : 'https://linear.app/finnaprotocol/issue/{}',
         }],
     ],
 };

@@ -103,6 +103,7 @@ jobs:
           BUNDLE_ID: 'com.finna.protocol.stg'
           OS_VERSION: ${{ matrix.os }}
           DEVICE_NAME: ${{ matrix.model }}
+          PLATFORM: 'iOS'
         run: |
           appium driver doctor xcuitest || true
           npm run ios${{github.event.inputs.flavor == 'prod' && '-prod' || '' }}
@@ -110,7 +111,7 @@ jobs:
       - name: Deploy Allure report
         uses: cybersokari/allure-deployer-action@v1.7.6
         with:
-          allure_results_path: ${{ github.workspace }}/reports/ios/allure-results
+          allure_results_path: ${{ github.workspace }}/allure-results
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcs_bucket: ${{ secrets.GCS_BUCKET }}
@@ -219,6 +220,7 @@ jobs:
           PACKAGE_NAME: ${{ secrets.PACKAGE_NAME }}
           OS_VERSION: ${{ matrix.api-level }}
           DEVICE_NAME: ${{matrix.device}}
+          PLATFORM: 'Android'
         with:
           api-level: ${{ matrix.api-level }}
           target: 'google_apis'
@@ -233,7 +235,7 @@ jobs:
       - name: Deploy Allure report
         uses: cybersokari/allure-deployer-action@v1.7.6
         with:
-          allure_results_path: ${{ github.workspace }}/reports/android/allure-results
+          allure_results_path: ${{ github.workspace }}/allure-results
           target: firebase
           google_credentials_json: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           gcs_bucket: ${{ secrets.GCS_BUCKET }}

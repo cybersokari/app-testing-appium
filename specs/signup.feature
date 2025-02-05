@@ -10,4 +10,4 @@ Feature: Create new user
     And I can see the login page
     Examples:
       | valid password |
-      |SuperSecretPassword1@|
+      |SuperSecretPassword1@3@|
