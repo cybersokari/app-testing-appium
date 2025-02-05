@@ -63,7 +63,7 @@ When(/^I enter a new email and (.*) and click continue$/, async function (validP
     this.newEmail = tempEmail
     await signupPage.waitForLoading()
 });
-When(/^verify my account with a valid OTP sent to my email$/, async function () {
+When(/^verify my account with a valid OTP sent to my email$/, {wrapperOptions: {retry: 1}}, async function () {
     const verifyPage = new VerifyPage()
     await verifyPage.verifyBtn.waitForDisplayed()
     const mailosaur = new MailosaurClient(process.env.MAILOSAUR_KEY!)

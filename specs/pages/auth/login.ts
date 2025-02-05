@@ -25,7 +25,11 @@ export class LoginPage extends Page {
   }
 
   public async loginWithDefaultUser() {
-    await this.emailInput.setValue(process.env.FINNA_USER_EMAIL!)
+    const email = process.env.FINNA_USER_EMAIL!
+    for (const char of email) {
+      // add one at a time to avoid https://github.com/webdriverio/webdriverio/issues/11577
+      await this.emailInput.addValue(char)
+    }
     await this.passwordInput.setValue(process.env.FINNA_USER_PASSWORD!)
     await this.login()
   }

@@ -1,10 +1,11 @@
 import {Given, Then, When} from "@wdio/cucumber-framework";
-import {browser, expect} from "@wdio/globals";
+import {browser} from "@wdio/globals";
 import {Navigation} from "../pages/navigation.ts";
 import ProfilePage from "../pages/profile.ts";
 import {SecurityPage} from "../pages/account/security.ts";
 import {ChangePasswordPage} from "../pages/account/change-password.ts";
 import {Page, ToastStatus} from "../pages/page.ts";
+import {expect} from 'chai'
 
 
 Given(/^I navigate to change password screen$/, async function () {
@@ -47,5 +48,5 @@ When(/^I enter (.*) as the new password confirmation and click continue$/, async
     await changePasswordPage.confirmChangePasswordBtn.click()
 });
 Then(/^I should see an error toast message$/, async function () {
-    expect(await new Page().getToastStatus()).toEqual(ToastStatus.ERROR)
+    expect(await new Page().getToastStatus()).to.equal(ToastStatus.ERROR)
 });

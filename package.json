@@ -5,6 +5,7 @@
     "@wdio/types": "^9.2.2",
     "appium-adb": "^12.7.0",
     "dotenv": "^16.4.5",
+    "wdio-video-reporter": "^6.1.1",
     "webdriverio": "^9.2.8"
   },
   "devDependencies": {
@@ -27,8 +28,8 @@
   },
   "scripts": {
     "android": "wdio run config/android.conf.ts",
-    "android-prod": "wdio run config/android-prod.conf.ts",
+    "android-prod": "wdio run config/android.conf.ts --cucumberOpts.tags '@prod'",
     "ios": "wdio run config/ios.conf.ts",
-    "ios-prod": "wdio run config/ios-prod.conf.ts"
+    "ios-prod": "wdio run config/ios.conf.ts --cucumberOpts.tags '@prod'"
   }
 }

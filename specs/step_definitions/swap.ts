@@ -2,9 +2,9 @@ import {Given, Then, When} from "@wdio/cucumber-framework";
 import {page} from "./hooks.ts";
 import {getFirstInputFromCurrentScreen} from "../util/util.ts";
 import {SwapPreviewPage} from "../pages/wallet/swap/swap-preview.ts";
-import {expect} from "@wdio/globals";
 import {SwapAmountPage} from "../pages/wallet/swap/swap-amount.ts";
 import HomePage from "../pages/home/home.ts";
+import {expect} from 'chai'
 
 Given(/^I initiate a (.*) swap$/, async function (token: string) {
     const homePage = HomePage
@@ -26,7 +26,7 @@ Given(/^I enter an amount greater than my current balance$/, async function () {
 Given(/^my available (.*) balance is not below (.*)$/, async function (token: string, amount: string) {
     const swapAmountPage = new SwapAmountPage()
     const balance = await swapAmountPage.getBalance(token)
-    expect(balance).toBeGreaterThanOrEqual(parseFloat(amount))
+    expect(balance).to.be.greaterThanOrEqual(parseFloat(amount))
 });
 When(/^I enter (.*) as amount to swap$/, async function (amount: number) {
     await getFirstInputFromCurrentScreen().setValue(amount)
@@ -41,6 +41,6 @@ Then(/^I should be able to complete the swap$/, async function () {
     await swapPreviewPage.gotoWalletBtn.click()
 });
 Then(/^I should not see the swap confirmation screen$/, async function () {
-    const button = new SwapPreviewPage().confirmTransactionBtn
-    await expect(button).not.toBeDisplayed()
+    const isDisplayed  =  await new SwapPreviewPage().confirmTransactionBtn.isDisplayed()
+    expect(isDisplayed).not.be.true
 });

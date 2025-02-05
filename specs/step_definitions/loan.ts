@@ -34,14 +34,16 @@ Given(/^I am on loan section$/, async function () {
     }
     // await loanHomePage.applyNowBtn.waitForDisplayed()
 });
-When(/^I apply for a loan of (.*)$/, async function (amount: number) {
+When(/^I apply for a loan of (.*)$/, async function (amount: any) {
     const loanHomePage = new LoanHomePage()
     const applyLoanBtn = loanHomePage.applyNowBtn
     await applyLoanBtn.click()
     const getLoanPage = new GetLoanPage()
     const loanAmountInput = getLoanPage.amountToBorrowInput
     await loanAmountInput.waitForDisplayed()
-    await loanAmountInput.setValue(amount)
+    if((await loanAmountInput.getValue()) === '' ) {
+        await loanAmountInput.setValue(amount)
+    }
     // Close iOS Number Keyboard
     if (browser.isIOS && (await browser.isKeyboardShown())) {
         await loanHomePage.closeIOSKeyboard()

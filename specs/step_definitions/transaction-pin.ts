@@ -1,7 +1,7 @@
 import {Then, When} from "@wdio/cucumber-framework";
 import {Navigation} from "../pages/navigation.ts";
 import ProfilePage from "../pages/profile.ts";
-import {browser, expect} from "@wdio/globals";
+import {browser} from "@wdio/globals";
 import {SecurityPage} from "../pages/account/security.ts";
 import {ResetPinPage} from "../pages/account/security/pin/reset-pin.ts";
 import {CurrentPinPage} from "../pages/account/security/pin/current-pin.ts";
@@ -9,6 +9,8 @@ import {getFirstInputFromCurrentScreen} from "../util/util.ts";
 import {NewPinPage} from "../pages/account/security/pin/new-pin.ts";
 import {RepeatPinPage} from "../pages/account/security/pin/repeat-pin.ts";
 import {Page, ToastStatus} from "../pages/page.ts";
+import {expect} from 'chai'
+
 
 When(/^I navigate to security settings$/, async function () {
     await new Navigation().profileBtn.click()
@@ -60,5 +62,5 @@ When(/^I confirm new pin (.*)$/, async function (pin: number) {
     await repeatNewPinContinueBtn.click()
 });
 Then(/^I should see an error message indicating invalid pin change$/, async function () {
-    expect(await new RepeatPinPage().getToastStatus()).toEqual(ToastStatus.ERROR)
+    expect(await new RepeatPinPage().getToastStatus()).to.equal(ToastStatus.ERROR)
 });

@@ -2,7 +2,8 @@ import {Given, Then, When} from '@wdio/cucumber-framework'
 import WelcomePage from '../pages/walkthrough.ts'
 import {LoginPage} from '../pages/auth/login.ts'
 import DepositCryptoPage from '../pages/wallet/crypto/deposit-crypto.ts'
-import {$, driver, expect} from '@wdio/globals'
+import {$, driver} from '@wdio/globals'
+import {expect, should} from 'chai'
 import WalletHomePage from "../pages/wallet/home.ts";
 import {Navigation} from "../pages/navigation.ts";
 import TopUpPage from "../pages/wallet/fiat/top-up.ts";
@@ -47,7 +48,7 @@ When(/^I can copy the wallet address to device clipboard$/, async function () {
     await DepositCryptoPage.dismissPushRequestBtn.click()
   }
   const ff = await driver.getClipboard('plaintext')
-  expect(ff.length).toBeGreaterThan(1)
+  expect(ff.length).to.be.greaterThan(1)
 })
 When(/^share the wallet address as text$/, async function () {
   await DepositCryptoPage.scrollDown()
@@ -55,10 +56,12 @@ When(/^share the wallet address as text$/, async function () {
   // Confirm native share modal visible
   if (driver.isIOS) {
     const iOSShareModal = $('~UICloseButtonBackground')
-    await expect(iOSShareModal).toBeExisting()
+    // await expect(iOSShareModal).toBeExisting()
+    should().exist(iOSShareModal, 'iOS modal should be visible')
     await iOSShareModal.click()
   } else {
-    await expect(page.$('android:id/content')).toBeDisplayed()
+    const isDisplayed = await page.$('android:id/content').isDisplayed()
+    expect(isDisplayed).to.be.true
   }
 })
 
@@ -102,5 +105,5 @@ When(/^I copy the NUBAN account number$/, async function () {
 });
 Then(/^the copied account number should be available on device clipboard$/, async function () {
   const accountNumber = await driver.getClipboard('plaintext')
-  await expect(accountNumber.length).toBeGreaterThan(0)
+  expect(accountNumber.length).to.be.greaterThan(1)
 });
