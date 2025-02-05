@@ -17,6 +17,14 @@ on:
         options:
           - stg
           - prod
+      max-parallel:
+        description: The maximum number of jobs that can run simultaneously
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
       slack:
         description: Send report info to Slack
         type: boolean
@@ -30,7 +38,7 @@ jobs:
       contents: write
       actions: write
     strategy:
-      max-parallel: 3
+      max-parallel: ${{github.event.inputs.max-parallel}}
       matrix:
         os: [17.5]
         model: [iPhone 15,iPhone SE (3rd generation)]
