@@ -115,15 +115,14 @@ export class Page {
   get progressIndicator(){return driver
       .$(this.isIOS ? 'XCUIElementTypeActivityIndicator' : 'android.widget.ProgressBar')}
 
-  public async waitForLoading(timeOut = 20000) {
-    try {
-      await this.progressIndicator.waitForExist({interval: 100, timeout: 5000})
-      await this.progressIndicator.waitForDisplayed({interval: 100}) // Wait for the indicator to be visible
-      await this.progressIndicator.waitForDisplayed({timeout: timeOut, reverse: true}) // Wait for the indicator to be invisible
-    }catch (e) {
-      console.log(`Progress indicator not found: ${e}`)
+    public async waitForLoading(timeOut = 20000) {
+        try {
+            await this.progressIndicator.waitForDisplayed({interval: 100, timeout: 2000}) // Wait for the indicator to be visible
+            await this.progressIndicator.waitForDisplayed({timeout: timeOut, reverse: true}) // Wait for the indicator to be invisible
+        }catch (e) {
+            console.log(`Progress indicator not found: ${e}`)
+        }
     }
-  }
 
   public async tapXYPositionOnIOS(x: number, y: number) {
     if(!driver.isIOS) return

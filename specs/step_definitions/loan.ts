@@ -41,8 +41,16 @@ When(/^I apply for a loan of (.*)$/, async function (amount: any) {
     const getLoanPage = new GetLoanPage()
     const loanAmountInput = getLoanPage.amountToBorrowInput
     await loanAmountInput.waitForDisplayed()
-    if((await loanAmountInput.getValue()) === '' ) {
-        await loanAmountInput.setValue(amount)
+    if(loanHomePage.isIOS){
+        const value = await loanAmountInput.getValue()
+        if(value === '' || value === '0' ) {
+            await loanAmountInput.setValue(amount)
+        }
+    } else {
+        const value = await loanAmountInput.getText()
+        if(value === '' || value === '0') {
+            await loanAmountInput.setValue(amount)
+        }
     }
     // Close iOS Number Keyboard
     if (browser.isIOS && (await browser.isKeyboardShown())) {
