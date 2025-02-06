@@ -39,7 +39,7 @@ When(/^I navigate to the profile screen$/, async function () {
     await ProfilePage.profileMenuBtn.waitForDisplayed()
 });
 When(/^clicks on logout button$/, async function () {
-    await ProfilePage.scrollDown()
+    await ProfilePage.logoutBtn.scrollIntoView()
     await ProfilePage.logoutBtn.click()
 });
 Then(/^I can see the login page$/, async function () {

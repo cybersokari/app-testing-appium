@@ -56,6 +56,7 @@ When(/^I apply for a loan of (.*)$/, async function (amount: any) {
     if (browser.isIOS && (await browser.isKeyboardShown())) {
         await loanHomePage.closeIOSKeyboard()
     }
+    await getLoanPage.loanContinueBtn.scrollIntoView()
     await getLoanPage.loanSummaryView.waitForDisplayed()
     const loanContinueBtn = getLoanPage.loanContinueBtn
     await loanContinueBtn.waitForEnabled()
@@ -64,9 +65,10 @@ When(/^I apply for a loan of (.*)$/, async function (amount: any) {
     // Accept loan screen
     const acceptLoanPage = new AcceptLoanPage()
     const acceptLoanCheckbox = acceptLoanPage.acceptLoanCheckbox
-    await acceptLoanCheckbox.waitForDisplayed()
+    await acceptLoanCheckbox.scrollIntoView()
     await acceptLoanCheckbox.click()
     const acceptLoanBtn = acceptLoanPage.acceptLoanBtn
+    await acceptLoanBtn.scrollIntoView()
     await acceptLoanBtn.waitForEnabled()
     await acceptLoanBtn.click()
 });

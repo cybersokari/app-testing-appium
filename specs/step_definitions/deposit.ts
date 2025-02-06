@@ -52,7 +52,7 @@ When(/^I can copy the wallet address to device clipboard$/, async function () {
   expect(ff.length).to.be.greaterThan(1)
 })
 When(/^share the wallet address as text$/, async function () {
-  await DepositCryptoPage.scrollDown()
+  await DepositCryptoPage.addressShareBtn.scrollIntoView()
   await DepositCryptoPage.addressShareBtn.click()
   // Confirm native share modal visible
   if (driver.isIOS) {
@@ -96,8 +96,7 @@ When(/^I copy the NUBAN account number$/, async function () {
     // dismiss push notification permission nudge request
     await TopUpAccountPage.dismissPushRequestBtn.click()
   }
-  await TopUpAccountPage.scrollDown()
-  await TopUpAccountPage.madePaymentBtn.waitForDisplayed()
+  await TopUpAccountPage.madePaymentBtn.scrollIntoView()
   await TopUpAccountPage.madePaymentBtn.doubleClick()
   await TopUpAccountPage.waitForLoading()
 

@@ -35,7 +35,15 @@ When(/^I enter (.*) as amount (.*) as address and (.*) as message$/, async funct
         //wait for keyboard close
         await sendCryptoPage.closeIOSKeyboard()
     }
-    await sendCryptoPage.continueBtn.doubleClick()
+    await sendCryptoPage.continueBtn.click()
+    // try {
+    //     while(await sendCryptoPage.continueBtn.isExisting()){
+    //         console.log(`Clicking on continue button:`)
+    //         await sendCryptoPage.continueBtn.click()
+    //         console.log(`Clicked on continue button:`)
+    //     }
+    // }catch (e) {}
+
 });
 When(/^I click on (.*) button$/, async function (buttonText: string) {
     const button = page.$(buttonText)

@@ -8,7 +8,7 @@ export const config: WebdriverIO.Config = {
     capabilities: [
         {
             platformName: 'iOS',
-            'appium:fullReset': false,
+            'appium:fullReset': true,
             'appium:deviceName': process.env.DEVICE_NAME,
             'appium:platformVersion': process.env.OS_VERSION,
             'appium:automationName': 'XCUITest',

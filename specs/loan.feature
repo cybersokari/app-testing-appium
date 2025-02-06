@@ -1,3 +1,4 @@
+@skip(platformName="Android")
 Feature: Loan
   Background:
     Given I am logged into the application

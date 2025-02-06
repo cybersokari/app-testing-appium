@@ -15,7 +15,7 @@ export const baseConfig: Partial<WebdriverIO.Config> = {
     port: 4723,
     maxInstances: 1,
     specs: ['../specs/**/*.feature'],
-    // specs: ['../specs/loan.feature'],
+    // specs: ['../specs/deposit.feature'],
 
     logLevel: 'warn',
     waitforTimeout: 20000,

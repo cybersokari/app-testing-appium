@@ -14,7 +14,7 @@ export const config: WebdriverIO.Config = {
         {
             platformName: 'Android',
             'appium:automationName': 'UiAutomator2',
-            'appium:fullReset': true,
+            'appium:fullReset': false,
             'appium:autoGrantPermissions': false,
             'appium:app': process.env.APK_PATH,
             'appium:uiautomator2ServerInstallTimeout': 60000,

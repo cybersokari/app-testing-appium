@@ -11,6 +11,7 @@ export class SwapAmountPage extends Page{
     public continueBtn = this.$('swap-continue-btn')
     public maxBtn = this.$('max-txt-btn')
     public async getBalance(currency: string) {
+        await this.availableBalanceTxt(currency).waitForDisplayed()
         if(driver.isIOS){
             return extractNumberFromText(await this.availableBalanceTxt(currency).getValue())
         }else {

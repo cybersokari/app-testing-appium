@@ -26,11 +26,12 @@ Given(/^I enter an amount greater than my current balance$/, async function () {
 Given(/^my available (.*) balance is not below (.*)$/, async function (token: string, amount: string) {
     const swapAmountPage = new SwapAmountPage()
     const balance = await swapAmountPage.getBalance(token)
+    console.log(`${token} balance:`, balance)
     expect(balance).to.be.greaterThanOrEqual(parseFloat(amount))
 });
 When(/^I enter (.*) as amount to swap$/, async function (amount: number) {
     await getFirstInputFromCurrentScreen().setValue(amount)
-    await page.delay(5000)
+    await page.delay(4000)
 });
 Then(/^I should be able to complete the swap$/, async function () {
     await new SwapAmountPage().continueBtn.click()
