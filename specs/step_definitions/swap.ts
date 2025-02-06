@@ -13,19 +13,24 @@ Given(/^I initiate a (.*) swap$/, async function (token: string) {
     const tokenBtn = page.$(`asset-${token}`)
     await tokenBtn.waitForDisplayed()
     await tokenBtn.click()
-    this.swapToken = token
+    this.swapToken = token.trim()
     await page.waitForLoading()
 });
 Given(/^I enter an amount greater than my current balance$/, async function () {
     const swapAmountPage = new SwapAmountPage()
-    const availableBalance = await swapAmountPage.getBalance(this.swapToken)
+    const balanceTxtView: ChainablePromiseElement = swapAmountPage.availableBalanceTxt(`${this.swapToken}`)
+    await swapAmountPage.continueBtn.scrollIntoView()
+    await balanceTxtView.scrollIntoView()
+    const availableBalance: number = await swapAmountPage.getNumberElement(balanceTxtView)
     await getFirstInputFromCurrentScreen().setValue(availableBalance + 0.001)
     await page.delay(5000)
     await swapAmountPage.continueBtn.click()
 });
 Given(/^my available (.*) balance is not below (.*)$/, async function (token: string, amount: string) {
     const swapAmountPage = new SwapAmountPage()
-    const balance = await swapAmountPage.getBalance(token)
+    const balanceTxtView: ChainablePromiseElement = swapAmountPage.availableBalanceTxt(token)
+    await balanceTxtView.waitForDisplayed()
+    const balance: number = await swapAmountPage.getNumberElement(balanceTxtView)
     console.log(`${token} balance:`, balance)
     expect(balance).to.be.greaterThanOrEqual(parseFloat(amount))
 });
@@ -42,6 +47,6 @@ Then(/^I should be able to complete the swap$/, async function () {
     await swapPreviewPage.gotoWalletBtn.click()
 });
 Then(/^I should not see the swap confirmation screen$/, async function () {
-    const isDisplayed  =  await new SwapPreviewPage().confirmTransactionBtn.isDisplayed()
+    const isDisplayed: boolean =  await new SwapPreviewPage().confirmTransactionBtn.isDisplayed()
     expect(isDisplayed).not.be.true
 });

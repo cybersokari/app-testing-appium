@@ -1,5 +1,6 @@
 import {ChainablePromiseElement} from 'webdriverio'
 import {$, $$, driver} from '@wdio/globals'
+import {extractNumberFromText} from "../util/util.ts";
 
 export class Page {
   public isAndroid: boolean
@@ -81,6 +82,14 @@ export class Page {
     } catch (error: any) {
       console.error(`Error waiting for value change: ${error.message}`)
       return false
+    }
+  }
+
+  public async getNumberElement(element: ChainablePromiseElement): Promise<number> {
+    if(driver.isIOS){
+      return extractNumberFromText(await element.getValue())
+    }else {
+      return extractNumberFromText(await element.getText())
     }
   }
 
